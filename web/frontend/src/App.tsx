@@ -1,6 +1,6 @@
 // import { SignIn } from "./pages/Auth/Signin";
 // import { SignUp } from "./pages/Auth/Signup";
-import { LoginPage } from "./views/auth/loginpage"
+// import { LoginPage } from "./views/auth/loginpage"
 // https://www.youtube.com/watch?v=GcrNHMcL-WM&list=PLnHJACx3NwAep5koWkniVHw8PK7dWCO21&pp=iAQB
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
   return (
     <>
     {/* <SignUp /> */}
-    {/* <h1>Hello</h1> */}
-    <LoginPage />
+    <h1>Hello</h1>
+    {/* <LoginPage /> */}
     </>
   )
 }

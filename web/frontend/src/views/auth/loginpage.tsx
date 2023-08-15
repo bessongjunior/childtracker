@@ -1,6 +1,6 @@
 
 import Button from '@mui/material/Button';
-import { useState } from "react";
+import { FC, useState } from "react";
 
 // import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import MicrosftIcon from "@mui/icons-material/Microsoft"
 
 
-export const LoginPage = () => {
+export const LoginPage: FC = () => {
 
     const [rememberMe, setRememberMe] = useState(false);
 
