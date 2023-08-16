@@ -65,7 +65,7 @@ class BaseConfig():
     MAX_CONTENT_LENGTH: int = 6 * 1000 * 1000
 
     SECURITY_PASSWORD_SALT: Optional[str | None] = os.environ.get('SECURITY_PASSWORD_SALT')
-    # SWAGGER_VALIDATOR_URL: str = 'http://localhost:5000/docs'#'http://domain.com/validator'
+    SWAGGER_VALIDATOR_URL: str = 'http://localhost:5000/docs'#'http://domain.com/validator'
     # BUNDLE_ERRORS: bool = True
 
     

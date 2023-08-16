@@ -64,7 +64,10 @@ alluser_model = user_ns.model('AllUsers', {
     "email": fields.String(),
     "firstname": fields.String(),
     "lastname": fields.String(),
-    'profile_photo': fields.String()
+    'profile_photo': fields.String(),
+    'date_joined': fields.String(),
+    'sex': fields.String(),
+    'country': fields.String()
 })
 
 tracker_model = user_ns.model('TrackerModel', {
@@ -396,7 +399,10 @@ class AllUsers(Resource):
                 'profile_photo': f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}",  #image_url, #user.profile_photo,
                 'email': user.email,
                 'firstname':user.firstname,
-                'lastname': user.lastname
+                'lastname': user.lastname,
+                'date_joined': user.date_joined,
+                'sex': user.sex,
+                'country': user.country
             })
 
         return result, HTTPStatus.OK
