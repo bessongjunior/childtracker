@@ -1,0 +1,16 @@
+// backend
+
+/web/backend/env/
+/web/backend/app/
+/web/backend/app/model/__pycache__
+/web/backend/app/routers/__pycache__
+/web/backend/app/routers/admin/__pycache__
+/web/backend/app/routers/users/__pycache__
+/web/backend/app/services/__pycache__
+/web/backend/app/utils/__pycache__
+
+
+//frontend
+
+/web/frontend/node_modules
+/web/frontend/yarn-error.log
