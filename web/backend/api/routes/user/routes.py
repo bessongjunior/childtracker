@@ -384,7 +384,7 @@ class TrackableDevices(Resource):
 class AllUsers(Resource):
     '''Resource endpoint to get user informations'''
 
-    @user_ns.marshal_list_with(alluser_model, envelope='data')
+    @user_ns.marshal_with(alluser_model)
     def get(self):
         '''get all users in db, without pagination'''
 
