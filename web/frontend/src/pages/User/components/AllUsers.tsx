@@ -83,7 +83,7 @@ export const AllUsers: FC = () => {
 
     ];
 
-
+    // const rows = [setData]
     return (
         <Fragment>
             <Title>All Customers</Title>

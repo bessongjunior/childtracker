@@ -4,7 +4,8 @@ export const EditProfile: FC = () => {
 
     return (
         <Fragment>
-            <h1>admin edit profile page info here</h1>
+            <h2>Edit Profile Information</h2>
+            {/* update, username, email */}
         </Fragment>
     )
 }
