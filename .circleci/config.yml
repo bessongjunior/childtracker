@@ -2,25 +2,51 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.12.0
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  say-hello:
+  build-backend:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
-      - image: cimg/base:stable
+      # - image: cimg/python:3.10.4
+      - image: circleci/python:3.10.4
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
+      - restore_cache:
+          keys: [build-backend:]
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Install Dependencies
+          command:  |
+              cd web && cd backend
+              # echo 'export PATH=$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
+              python3 -m venv env
+              source env/bin/activate
+              pip install -r requirements.txt
+      - run:
+          name: Back-end Test
+          command:  |
+              cd web
+              cd backend
+              source env/bin/activate
+              python run.py
+              pytest tests/tests.py
+
+
+      # - run:
+      #     name: Back-end build
+      #     command:  |
+      #         cd web
+      #         cd backend
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
+      - build-backend
