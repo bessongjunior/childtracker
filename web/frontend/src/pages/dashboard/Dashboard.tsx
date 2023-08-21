@@ -13,21 +13,28 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import Card from '@mui/material/Card';
+
+
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../../layouts/AdminSidebar/sidebar';
-// import Chart from './components/Chart';
-import Deposits from './components/Deposits';
-import Orders from './components/Orders';
+
+
+import { AddDevice } from './components/AddDevice';
+import { UserInfo } from './components/SearchUser';
+import { TrackDevice } from './components/TrackDevice';
+import { FindADeviceInfo } from './components/DeviceInfo';
+import { CardContent } from '@mui/material';
+import Title from './components/Title';
 
 // function Copyright(props) {
   function Copyright() {
   return (
     // <Typography variant="body2" color="text.secondary" align="center" {...props}>
-    <Typography variant="body2" color="text.secondary" align="center">
+    <Typography variant="body2" color="text.secondary" align="center" sx={{pt: 4}}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -168,39 +175,41 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="lg" sx={{ my: 4 }}>          
             <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  {/* <Chart /> */}
-                </Paper>
+              <Grid item xs={12} md={12} lg={12}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={4} md={4} lg={4}>
+                      <Card><CardContent><Title>Hello</Title></CardContent></Card>
+                    </Grid>
+                    <Grid item xs={4} md={4} lg={4}>
+                      <Card><CardContent><Title>Hello</Title></CardContent></Card>
+                    </Grid>
+                    <Grid item xs={4} md={4} lg={4}>
+                      <Card><CardContent><Title>Hello</Title></CardContent></Card>
+                    </Grid>
+                    {/* <Grid item xs={3} md={3} lg={3}>
+                      <Card><CardContent><Title>Hello</Title></CardContent></Card>
+                    </Grid> */}
+                  </Grid>
               </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Deposits />
-                </Paper>
+              {/* Register a user device */}
+              <Grid item xs={12} md={8} lg={8}>
+                <AddDevice />
               </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
-                </Paper>
+              {/* Get user info from mail */}
+              <Grid item xs={12} md={4} lg={4}>
+                <UserInfo />
+              </Grid>
+
+              {/* Track a Device */}
+              <Grid item xs={12}  md={8} lg={8}>
+                <TrackDevice />
+              </Grid>
+
+              {/* Get device Info */}
+              <Grid item xs={12} md={4} lg={4}>
+                <FindADeviceInfo />
               </Grid>
             </Grid>
             {/* <Copyright sx={{ pt: 4 }} /> */}

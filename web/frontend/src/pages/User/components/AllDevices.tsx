@@ -40,7 +40,7 @@ export const AllDevices: FC = () => {
       console.log(data);
 
   return (
-    <Box sx={{ height: 700, width: '100%' }}>
+    <Box sx={{ height: 700, width: '100%', my: 2 }}>
       <DataGrid
         rows={setData}
         columns={columns}

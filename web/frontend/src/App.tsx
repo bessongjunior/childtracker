@@ -3,9 +3,9 @@
 // import { LoginPage } from "./views/auth/loginpage"
 // https://www.youtube.com/watch?v=GcrNHMcL-WM&list=PLnHJACx3NwAep5koWkniVHw8PK7dWCO21&pp=iAQB
 
-// import Dashboard from "./pages/dashboard/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 // import { Users } from "./pages/User/Users"
-import { Profile } from "./pages/Profile/Profile";
+// import { Profile } from "./pages/Profile/Profile";
 
 
 function App() {
@@ -16,9 +16,9 @@ function App() {
     {/* <SignUp /> */}
     {/* <h1>Hello</h1> */}
     {/* <LoginPage /> */}
-    {/* <Dashboard /> */}
+    <Dashboard />
     {/* <Users /> */}
-    <Profile />
+    {/* <Profile /> */}
     </>
   )
 }
