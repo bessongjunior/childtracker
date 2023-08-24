@@ -42,6 +42,14 @@ admin_edit_model = admin_ns.model('EditModel', {
     "email": fields.String()
 })
 
+all_devices_model = admin_ns.model('AllDevicesModel', {
+     'id': fields.String(),
+     'serial number': fields.String(),
+     'name': fields.String(),
+     'task': fields.String(),
+     'owner': fields.String()
+})
+
 
 assign_device_model = admin_ns.model('AssignDeviceModel', {
                                         "name": fields.String(),
@@ -272,6 +280,39 @@ class EditAdminDetails(Resource):
         }, HTTPStatus.ACCEPTED   
 
 
+@admin_ns.route('/v1/resetpassword')
+class ResetPassword(Resource):
+    '''Resource endpoint to reset password'''
+
+    def post(self):
+        '''Endpoint to reset password'''
+
+        req_data = request.get_json()
+
+        _email = req_data.get("email")
+        _new_password = req_data.get("password")
+
+        # check if email exist in database
+        check_mail = Admin.find_by_email(_email)
+
+        if not check_mail:
+            # add logs
+            return {
+                "success": False,
+                "msg": f"Sorry Your email: {_email}is not Found."
+            }, HTTPStatus.BAD_REQUEST
+        
+        # Hashing password before saving in database
+
+        check_mail.password = self.set_password(_new_password)
+
+        db.session.commit()
+
+        return {"success": True, "msg": "Password successfully updated. Login Now."}, HTTPStatus.ACCEPTED
+
+
+
+
 # @admin_ns.route('/v1/profile/<string:username>/')
 # class UserProfile(Resource):
 #     '''User profile endpoint'''
@@ -326,30 +367,9 @@ class RegisterUserDevice(Resource):
 class UserDevices(Resource):
     '''Return all devices and username in db'''
 
-    # @user_ns.marshal_with(user_devices_all_model) # add schema
+    @admin_ns.marshal_with(all_devices_model) # add schema
     def get(self):
         '''Endpoint to give all devices and username'''
-
-        # users = Users.query.all()
-    
-        # res = [
-        #     {
-        #         'id': user.id, 
-        #         # 'sn': device.serial_number, 
-        #         'name': user.username, 
-        #         'image_url': "fix image url",
-        #         'devices': [
-        #             { 
-        #                 'id': device.id, 
-        #                 'sn': device.serial_number, 
-        #                 'name': device.name,
-        #                 'task': device.task
-        #             } for device in user.user_devices
-        #         ]
-        #     } for user in users
-        # ]
-
-        # return {"data": res}, HTTPStatus.OK
 
         devices  = Devices.query.all()
 
@@ -359,12 +379,10 @@ class UserDevices(Resource):
                 'serial number': device.serial_number, 
                 'name': device.name,
                 'task': device.task,
-                # 'owner': [{'name': user.name} for user in device.user_id]
+                'owner': f"{device.users.firstname} {device.users.lastname}"
              } for device in devices
         ]
 
-        return {"data": resp}, HTTPStatus.OK
-    
+        return resp, HTTPStatus.OK
 
-        
 

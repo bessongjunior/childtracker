@@ -71,6 +71,7 @@ export const SignIn = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              size='small'
             />
             <TextField
               margin="normal"
@@ -81,6 +82,7 @@ export const SignIn = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              size='small'
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

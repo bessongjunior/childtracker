@@ -1,10 +1,17 @@
 // import { SignIn } from "./pages/Auth/Signin";
 // import { SignUp } from "./pages/Auth/Signup";
-// import { LoginPage } from "./views/auth/loginpage"
+// import { LoginPage } from "./views/auth/loginpage";
 // https://www.youtube.com/watch?v=GcrNHMcL-WM&list=PLnHJACx3NwAep5koWkniVHw8PK7dWCO21&pp=iAQB
 
-import Dashboard from "./pages/dashboard/Dashboard";
+// import { UserProfile } from "./views/Profile";
+import { UserReport } from "./views/dashboard/Report";
+// import { UserSettings } from "./views/Setting";
+
+// import { ResetPasscode } from "./pages/Auth/ResetPassword"
+
+// import Dashboard from "./pages/dashboard/Dashboard";
 // import { Users } from "./pages/User/Users"
+
 // import { Profile } from "./pages/Profile/Profile";
 
 
@@ -14,11 +21,17 @@ function App() {
   return (
     <>
     {/* <SignUp /> */}
-    {/* <h1>Hello</h1> */}
+    {/* <ResetPasscode /> */}
     {/* <LoginPage /> */}
-    <Dashboard />
+    {/* <Dashboard /> */}
     {/* <Users /> */}
+    {/* <AllDevices /> */}
     {/* <Profile /> */}
+
+    {/* <UserProfile /> */}
+    {/* <UserSettings /> */}
+    <UserReport />
+    {/* <h1>hello</h1> */}
     </>
   )
 }

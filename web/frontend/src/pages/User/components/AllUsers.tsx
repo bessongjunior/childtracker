@@ -1,15 +1,9 @@
 import { FC, Fragment, useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { DataGrid, GridColDef} from '@mui/x-data-grid';
-
-
-// import Link from '@mui/material/Link';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import TablePagination from '@mui/material/TablePagination';
+// 
 import Title from '../../dashboard/components/Title';
 
 // https://stackoverflow.com/questions/75437594/displaying-data-in-material-ui-table-from-api-using-fetch-api
@@ -22,10 +16,8 @@ export const AllUsers: FC = () => {
     useEffect(() => {
         fetch("http://127.0.0.1:5000/user/v1/allusers")
           .then((res) => res.json())
-          .then((res) => {
-            // console.log(res);
-            setData(res);
-          });
+          .then((res) => { setData(res); })
+          .catch((err) => console.log(err))
       }, []);
       console.log(data);
 
@@ -34,50 +26,50 @@ export const AllUsers: FC = () => {
         { 
             field: 'username',
             headerName: 'User name',
-            width: 150,
+            width: 130,
             editable: false,
        },
         {
           field: 'firstname',
           headerName: 'First name',
-          width: 150,
+          width: 130,
           editable: false,
         },
         {
           field: 'lastname',
           headerName: 'Last name',
-          width: 150,
+          width: 130,
           editable: false,
         },
         {
-          field: 'profile',
+          field: 'email',
           headerName: 'Email',
         //   type: 'number',
           width: 150,
           editable: false,
         },
-        {
-            field: 'profile_photo',
-            headerName: 'Profile',
-            width: '150',
-            editable: false,
-        },
+        // {
+        //     field: 'profile_photo',
+        //     headerName: 'Profile',
+        //     // width: '150',
+        //     editable: false,
+        // },
         {
             field: 'sex',
             headerName: 'Sex',
-            width: '130',
+            // width: '130',
             editable: false,
         },
         {
             field: 'date_joined',
             headerName: 'Date Joined',
-            width: '150',
+            // width: '150',
             editable: false,
         },
         {
-            field: 'xountry',
+            field: 'country',
             headerName: 'Country',
-            width: '150',
+            // width: '150',
             editable: false,
         },
 
@@ -86,48 +78,29 @@ export const AllUsers: FC = () => {
     // const rows = [setData]
     return (
         <Fragment>
-            <Title>All Customers</Title>
-            <Box sx={{ height: 400, width: '100%' }}>
-                <DataGrid
-                    // rows={rows}
-                    rows={setData}
-                    columns={columns}
-                    initialState={{
-                    pagination: {
-                        paginationModel: {
-                        pageSize: 5,
+            {/* <Box sx={{ height: 400, width: '100%' }}> */}
+            <Card>
+                <CardContent>
+                    <Title>All Users Information</Title>
+                    <DataGrid
+                        // rows={rows}
+                        rows={data}
+                        columns={columns}
+                        initialState={{
+                        pagination: {
+                            paginationModel: {
+                            pageSize: 5,
+                            },
                         },
-                    },
-                    }}
-                    pageSizeOptions={[5]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
-                />
-            </Box>
+                        }}
+                        pageSizeOptions={[5]}
+                        checkboxSelection
+                        disableRowSelectionOnClick
+                        sx={{my: 1}}
+                    />
+                </CardContent>
+            </Card>
+            {/* </Box> */}
         </Fragment>
     )
 }
-
-
-
-
-// export default function DataGridDemo() {
-//   return (
-//     <Box sx={{ height: 400, width: '100%' }}>
-//       <DataGrid
-//         rows={rows}
-//         columns={columns}
-//         initialState={{
-//           pagination: {
-//             paginationModel: {
-//               pageSize: 5,
-//             },
-//           },
-//         }}
-//         pageSizeOptions={[5]}
-//         checkboxSelection
-//         disableRowSelectionOnClick
-//       />
-//     </Box>
-//   );
-// }
