@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import { FC, Fragment } from 'react';
 import {
   Box,
   Typography,
@@ -44,19 +45,19 @@ const ButtonUploadWrapper = styled(Box)(
     bottom: -${theme.spacing(1)};
     right: -${theme.spacing(1)};
 
-    // .MuiIconButton-root {
-    //   border-radius: 100%;
-    //   background: ${theme.palette.primary.main};
-    //   color: ${theme.palette.primary.contrastText};
-    //   box-shadow: ${theme.palette.primary.main};
-    //   width: ${theme.spacing(4)};
-    //   height: ${theme.spacing(4)};
-    //   padding: 0;
+    .MuiIconButton-root {
+      border-radius: 100%;
+      background: ${theme.palette.primary.main};
+      color: ${theme.palette.primary.contrastText};
+      box-shadow: ${theme.palette.primary.main};
+      width: ${theme.spacing(4)};
+      height: ${theme.spacing(4)};
+      padding: 0;
   
-    //   &:hover {
-    //     background: ${theme.palette.primary.dark};
-    //   }
-    // }
+      &:hover {
+        background: ${theme.palette.primary.dark};
+      }
+    }
 `
 );
 
@@ -78,11 +79,41 @@ const CardCoverAction = styled(Box)(
   `
   );
 
+// type UserProps = {
+//   savedCards: number,
+//   name: string,
+//   coverImg: string,
+//   avatar: string,
+//   description: string,
+//   jobtitle: string,
+//   location: string,
+//   followers: string
+// }
 
-const ProfileCover = ({ user }) => {
+  // name: string,
+  // profile_photo: string,
+  // email: string,
+  // date_of_birth: string,
+  // sex: string,
+  // country: string,
+  // province: string,
+  // description: string,
+  // jobtitle: string
+
+
+export const ProfileCover: FC<{ user: {
+  savedCards: number,
+  name: string,
+  coverImg: string,
+  avatar: string | undefined,
+  description: string,
+  jobtitle: string,
+  location: string,
+  followers: string
+}
+}> = ({ user }) => {
     return (
-      <>
-        
+      <Fragment>
         <CardCover>
           <CardMedia image={user.coverImg} />
           <CardCoverAction>
@@ -99,7 +130,7 @@ const ProfileCover = ({ user }) => {
           </CardCoverAction>
         </CardCover>
         <AvatarWrapper>
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          <Avatar variant="rounded" alt={user.name} src={user.profile_photo} />
           <ButtonUploadWrapper>
             <Input
               accept="image/*"
@@ -148,13 +179,13 @@ const ProfileCover = ({ user }) => {
             </Button>
           </Box>
         </Box>
-      </>
+      </Fragment>
     );
   };
   
-  ProfileCover.propTypes = {
-    // @ts-ignore
-    user: PropTypes.object.isRequired
-  };
+  // ProfileCover.propTypes = {
+  //   // @ts-ignore
+  //   user: PropTypes.object.isRequired
+  // };
 
-export default ProfileCover;
+// export default ProfileCover;

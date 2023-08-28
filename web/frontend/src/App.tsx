@@ -3,9 +3,16 @@
 // import { LoginPage } from "./views/auth/loginpage";
 // https://www.youtube.com/watch?v=GcrNHMcL-WM&list=PLnHJACx3NwAep5koWkniVHw8PK7dWCO21&pp=iAQB
 
-// import { UserProfile } from "./views/Profile";
-import { UserReport } from "./views/dashboard/Report";
-// import { UserSettings } from "./views/Setting";
+// import UserSignUp from "./views/auth/registerpage"
+
+
+// import { UserSignIn } from "./views/auth/loginpage"
+// import { PasswordReset } from "./views/auth/passwordresetpage"
+// import { UserDashboard } from "./views/dashboard/UserDashboard"
+
+// import { UserProfile } from "./views/dashboard/Profile";
+// import { UserReport } from "./views/dashboard/Report";
+import { UserSettings } from "./views/dashboard/Setting";
 
 // import { ResetPasscode } from "./pages/Auth/ResetPassword"
 
@@ -16,7 +23,6 @@ import { UserReport } from "./views/dashboard/Report";
 
 
 function App() {
-
 
   return (
     <>
@@ -29,9 +35,13 @@ function App() {
     {/* <Profile /> */}
 
     {/* <UserProfile /> */}
-    {/* <UserSettings /> */}
-    <UserReport />
+    <UserSettings />
+    {/* <UserReport /> */}
     {/* <h1>hello</h1> */}
+    {/* <UserDashboard /> */}
+    {/* <UserSignIn /> */}
+    {/* <PasswordReset /> */}
+    {/* <UserSignUp /> */}
     </>
   )
 }

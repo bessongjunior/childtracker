@@ -5,12 +5,13 @@ import { Container, Tabs, Tab, Grid } from '@mui/material';
 // import Footer from 'src/components/Footer';
 import { styled } from '@mui/material/styles';
 
-import ActivityTab from './components/ActivityTab';
+// import ActivityTab from './components/ActivityTab';
 import EditProfileTab from './components/EditProfileTab';
 import NotificationsTab from './components/NotificationsTab';
 import SecurityTab from './components/SecurityTab';
-import PageTitleWrapper from '../../components/PageTitleWrapper';
+// import PageTitleWrapper from '../../components/PageTitleWrapper';
 import { PageHeader } from './components/PageHeader';
+import PageTitleWrapper from '../../../components/PageTitleWrapper';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -21,10 +22,11 @@ const TabsWrapper = styled(Tabs)(
 );
 
 export const UserSettings: FC = () => {
-  const [currentTab, setCurrentTab] = useState<string>('activity');
+
+  const [currentTab, setCurrentTab] = useState<string>('edit_profile'); //activity
 
   const tabs = [
-    { value: 'activity', label: 'Activity' },
+    // { value: 'activity', label: 'Activity' },
     { value: 'edit_profile', label: 'Edit Profile' },
     { value: 'notifications', label: 'Notifications' },
     { value: 'security', label: 'Passwords/Security' }
@@ -62,7 +64,7 @@ export const UserSettings: FC = () => {
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'activity' && <ActivityTab />}
+            {/* {currentTab === 'activity' && <ActivityTab />} */}
             {currentTab === 'edit_profile' && <EditProfileTab />}
             {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />}
