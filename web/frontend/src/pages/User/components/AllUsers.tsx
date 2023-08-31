@@ -13,8 +13,13 @@ export const AllUsers: FC = () => {
 
     const [data, setData] = useState([]);
 
+    const accessToken = ''
+
     useEffect(() => {
-        fetch("http://127.0.0.1:5000/user/v1/allusers")
+        fetch("http://127.0.0.1:5000/admin/v1/allusers",
+        {
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}
+        })
           .then((res) => res.json())
           .then((res) => { setData(res); })
           .catch((err) => console.log(err))
