@@ -1,7 +1,7 @@
 
 
 import os
-# from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone, timedelta
 from http import HTTPStatus
 from functools import wraps
 import logging, jwt
@@ -10,6 +10,9 @@ from flask import request, url_for, current_app
 from flask_restx import Namespace, Resource, fields, reqparse
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
+from sqlalchemy import or_
+# from flask_sqlalchemy import or_
+from flask_jwt_extended import create_access_token, get_jwt_identity,jwt_required
 
 from ...model.models import db, Admin, Users, Devices, JWTTokenBlocklist
 # from from backend.api.models.models import db, Admin
@@ -52,8 +55,10 @@ all_devices_model = admin_ns.model('AllDevicesModel', {
 
 
 assign_device_model = admin_ns.model('AssignDeviceModel', {
-                                        "name": fields.String(),
-                                        "serial_number": fields.String()
+                                        "devicename": fields.String(),
+                                        "serialnumber": fields.String(),
+                                        'username': fields.String(),
+                                        "email": fields.String()
                                     })
 
 
@@ -92,6 +97,9 @@ def token_required(f):
         try:
             data = jwt.decode(token, BaseConfig.SECRET_KEY, algorithms=["HS256"])
             current_user = Admin.find_by_email(data["email"])
+            print(current_user[id])
+            # current_user = current_user_id.id
+            print(current_user.email)
 
             if not current_user:
                 return {"success": False,
@@ -115,6 +123,7 @@ def token_required(f):
 
 ''' Routes '''
 
+# token not required
 
 @admin_ns.route('/v1/register')
 class RegisterAdmin(Resource):
@@ -182,8 +191,10 @@ class LoginAdmin(Resource):
             return {"success": False,
                     "msg": "Wrong credentials."}, HTTPStatus.UNPROCESSABLE_ENTITY 
 
-        # # create access token uwing JWT
-        # # token = jwt.encode({'email': _email, 'exp': datetime.utcnow() + timedelta(minutes=30)}, BaseConfig.SECRET_KEY)
+        # create access token uwing JWT
+        token = jwt.encode({'email': _email, 'exp': datetime.utcnow() + timedelta(minutes=30)}, BaseConfig.SECRET_KEY)
+
+        access_token = create_access_token(identity=_email)
 
         admin_exists.set_jwt_auth_active(True)
         admin_exists.save()
@@ -191,24 +202,58 @@ class LoginAdmin(Resource):
         image_url = url_for('static', filename=f'profile/admin/{admin_exists.profile}', _external=True)
 
         return {"success": True,
-                # "token": token,
+                "token": access_token,
                 "user": admin_exists.toJSON(),
                 "image_url": image_url
                 }, HTTPStatus.CREATED
 
 
+@admin_ns.route('/v1/resetpassword')
+class ResetPassword(Resource):
+    '''Resource endpoint to reset password'''
+
+    def post(self):
+        '''Endpoint to reset password'''
+
+        req_data = request.get_json()
+
+        _email = req_data.get("email")
+        _new_password = req_data.get("password")
+
+        # check if email exist in database
+        check_mail = Admin.find_by_email(_email)
+
+        if not check_mail:
+            # add logs
+            return {
+                "success": False,
+                "msg": f"Sorry Your email: {_email}is not Found."
+            }, HTTPStatus.BAD_REQUEST
+        
+        # Hashing password before saving in database
+
+        check_mail.password = self.set_password(_new_password)
+
+        db.session.commit()
+
+        return {"success": True, "msg": "Password successfully updated. Login Now."}, HTTPStatus.ACCEPTED
+
+# Token required
+
 @admin_ns.route('/v1/logout')
 class LogoutAdmin(Resource):
     ''' Logout resource route'''
 
-    @token_required
-    def post(self, current_user):
+    # @token_required
+    @jwt_required
+    def post(self): #, current_user
         '''Admin Logout endpoint'''
 
         # _JWT_token = request.headers.get('Authorization')
         # _jwt_token = request.headers["authorization"]
+        current_user = get_jwt_identity()
 
-        admin_check = Admin.find_by_id(current_user.id)
+        admin_check = Admin.find_by_id(current_user)
         print(admin_check)
         admin_check.set_jwt_auth_active(False)
         admin_check.save()
@@ -216,32 +261,70 @@ class LogoutAdmin(Resource):
         return {"success": True, "msg": "successfully logged out!"}, HTTPStatus.OK
 
 
+@admin_ns.route('/v1/profile-info')
+class AdminUserInfo(Resource):
+    '''Resource for admin Profil Details'''
+
+    @jwt_required()
+    def get(self):
+        '''Endpoint which returns admin profile info'''
+
+        current_user = get_jwt_identity()
+        admin_info = Admin.query.filter_by(email=current_user).first()
+
+        res = {
+                'date_joined': f'{admin_info.date_joined}',
+                'email': admin_info.email,
+                'name': admin_info.admin_username,
+                'image_url': 'string;',
+                'username': f"{admin_info.first_name} {admin_info.last_name}",
+                'location': 'Cameroon',
+        }
+
+        return res, HTTPStatus.OK
+
+
 @admin_ns.route('/v1/edit')
 class EditAdminDetails(Resource):
-    ''' Logout resource route'''
+    ''' Edit resource route'''
 
     @admin_ns.expect(admin_edit_model)
-    @token_required
-    def patch(self, current_user):
+    # @token_required
+    @jwt_required()
+    def patch(self):
         '''Admin Logout endpoint'''
 
         req_data = request.get_json()
+        current_user = get_jwt_identity()
 
         _new_username = req_data.get("username")
         _new_email = req_data.get("email")
         _contact = req_data.get("contact")
 
-        admin_updates = Admin.query.filter_by(id=int(current_user.id)).first()
-        admin_updates.usename = _new_username
+        # print(req_data)
+        # print(current_user)
+
+
+        admin_updates = Admin.query.filter_by(email=current_user).first()
+
+        print(admin_updates)
+        admin_updates.admin_username = _new_username
         admin_updates.email = _new_email
-        admin_updates.contact = _contact
+        # admin_updates.contact = _contact
+
+        # if _new_username:
+        #     self.update_username(_new_username)
+        
+        # if _new_email:
+        #     self.update_email(_new_email)
 
         db.session.commit()
 
         return {"success": True, "msg": "username and email successfully updated."}, HTTPStatus.ACCEPTED
 
     @admin_ns.expect(upload_parser)
-    @token_required
+    # @token_required
+    @jwt_required()
     def put(self, current_user):
         '''Admin profile picture upload endpoint'''
 
@@ -279,40 +362,6 @@ class EditAdminDetails(Resource):
              "msg": "Profile picture successfully uploads"
         }, HTTPStatus.ACCEPTED   
 
-
-@admin_ns.route('/v1/resetpassword')
-class ResetPassword(Resource):
-    '''Resource endpoint to reset password'''
-
-    def post(self):
-        '''Endpoint to reset password'''
-
-        req_data = request.get_json()
-
-        _email = req_data.get("email")
-        _new_password = req_data.get("password")
-
-        # check if email exist in database
-        check_mail = Admin.find_by_email(_email)
-
-        if not check_mail:
-            # add logs
-            return {
-                "success": False,
-                "msg": f"Sorry Your email: {_email}is not Found."
-            }, HTTPStatus.BAD_REQUEST
-        
-        # Hashing password before saving in database
-
-        check_mail.password = self.set_password(_new_password)
-
-        db.session.commit()
-
-        return {"success": True, "msg": "Password successfully updated. Login Now."}, HTTPStatus.ACCEPTED
-
-
-
-
 # @admin_ns.route('/v1/profile/<string:username>/')
 # class UserProfile(Resource):
 #     '''User profile endpoint'''
@@ -328,39 +377,68 @@ class ResetPassword(Resource):
 #         return {'image_url': image_url}, HTTPStatus.OK
 
 
-# @admin_ns.route('v1/device/user_id/registration')
+@admin_ns.route('/v1/device/registration')
 class RegisterUserDevice(Resource):
-    ''' Logout resource route'''
+    ''' Device Registration resource route'''
 
     @admin_ns.expect(assign_device_model)
-    @token_required
-    def post(self, userid, current_user):
-        '''post test'''
+    # @token_required
+    @jwt_required()
+    def post(self): #, current_user
+        '''endpoint to register a user device'''
 
         req_data = request.get_json()
+        current_user = get_jwt_identity()
+        print(current_user)
+        print(req_data)
 
-        _serial_number = req_data.get("serial_number")
-        _name = req_data.get("name")
-        user_id = userid
+        _serial_number = req_data.get("serialnumber")
+        _name = req_data.get("devicename")
+        _email = req_data.get("email")
+        _username = req_data.get("username")
 
         # check userid exist
 
-        check_user = Users.get_by_id(user_id)
+        check_user = Users.get_by_username(_username)  #.get_by_id(user_id)
 
         if not check_user:
             # add logs
             return {"success": False, "msg": "user do not exist"}, HTTPStatus.UNAUTHORIZED
         
+        # check email
+
+        check_mail = Users.get_by_email(_email)
+
+        if not check_mail:
+            # add log
+            return {"success": False, "msg": "user email do not exist"}, HTTPStatus.UNAUTHORIZED
+       
+        # confirm check user & check_mail have the same id
+
+        if check_user.id != check_mail.id:
+            # add logs
+            return {"Success": False, "msg": "username and email are not of the same user!"}, HTTPStatus.BAD_REQUEST
+        
+        else:
+            user_id = check_user.id
+            # pass
+
+        # admin_exist= Admin.find_by_email(current_user)
+        # print(admin_exist.id)
+
+        # if admin_exist is not None:
+        #     admin_id = admin_exist.id
+        # print(current_user.id) str attri has no val id!!
+
         user_device = Devices(user_id=user_id, 
                               serial_number=_serial_number,
                               name=_name,
-                              admin_id=current_user.id
+                              admin_id=current_user #admin_id #current_user.id
                               )
-        
+        # user_device.
         user_device.save()
 
         return {"success": True, "msg": "Device attributed to user"}, HTTPStatus.CREATED
-
 
 
 @admin_ns.route('/alldevices')
@@ -368,6 +446,7 @@ class UserDevices(Resource):
     '''Return all devices and username in db'''
 
     @admin_ns.marshal_with(all_devices_model) # add schema
+    @jwt_required()
     def get(self):
         '''Endpoint to give all devices and username'''
 
@@ -384,5 +463,60 @@ class UserDevices(Resource):
         ]
 
         return resp, HTTPStatus.OK
+
+
+@admin_ns.route('/v1/users/<search_term>')
+class SearchUser(Resource):
+    '''Resource endpoint to Search and return user data'''
+
+    # @token_required
+    @jwt_required()
+    def get(self, search_term):
+        '''endpoint to Search and return user data'''
+
+        # results = Users.query.filter(Users.email.like('%'+search_term+'%')).all()
+        
+        results = Users.query.filter(or_(Users.phone_number.like('%'+search_term+'%'), Users.email.like('%'+search_term+'%'))).first()
+        # print(results)
+        if not results:
+            return {'success': False, 'msg': f'{search_term} not found, try again!'}, 404
+        
+        res = {
+                'username': results.username,
+                'email': results.email,
+                'firstname': results.firstname,
+                'lastname': results.lastname,
+                'phone': results.phone_number,
+                'date_joined': f'{results.date_joined}'}
+            # } for result in results
+        # print(res)
+
+        if results:
+            return res, 200
+            
+
+@admin_ns.route('/v1/device/<search_term>')
+class SearchDeviceInfo(Resource):
+    '''Resource endpoint to get details of a particular device'''
+
+    @jwt_required()
+    def get(self, search_term):
+        '''endpoint to return a particular device information'''
+
+        results = Devices.query.filter(or_(Devices.name.like('%'+search_term+'%'), Devices.serial_number.like('%'+search_term+'%')))
+        if not results:
+            return {'success': False, 'msg': f'{search_term} not found, try again!'}, 404
+        
+        res = {
+                'devicename': results.name,
+                'serialnumber': results.serial_number,
+                'status': results.task,
+                'ownername': f"{results.users.firstname} {results.users.lastname}",#results.users.username,
+                'ownerphone': results.users.phone_number,
+                'registrar': results.admin.username
+            }
+        
+        if results:
+            return res, 200
 
 

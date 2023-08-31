@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 
 
 export const TrackDevice: FC = () => {
-
+// get form data, add in get request, make it run every 0.3s
     return (
         <Fragment>
             <Box component='div'>
@@ -20,7 +20,7 @@ export const TrackDevice: FC = () => {
                       <Box
                         component="form"
                         sx={{
-                          // '& .MuiTextField-root': { m: 1, width: '25ch' },
+                          // '& .MuiTextField-root': { m: 1, width: '80ch' },
                           display: 'flex',
                           flexDirection: 'row',
                           mb: 1.5
@@ -32,24 +32,28 @@ export const TrackDevice: FC = () => {
                           size='small' 
                           autoFocus
                           required
+                          type='devicename'
                           label='Device name'
-                          sx={{mr: 1}}
+                          // sx={{mr: 1}}
+                          fullWidth
                         />
                         <TextField 
                           size='small'
+                          type='seralnumber'
                           autoFocus
                           required
                           label='Serial number'
-                          sx={{mr: 1}}
+                          sx={{mx: 1}}
+                          fullWidth
                         />
                         <Button
                           variant='contained'
                           type="submit"
                           size="small"
-                          // fullWidth
-                          sx={{ml: 2}}
-                        >
-                          Track
+                          fullWidth
+                          // sx={{mt: 0}}
+                        >Track
+                          {/* <Box component='span' sx={{mx: 'auto'}}>Track</Box> */}
                         </Button>
                       </Box>
                       <Card variant='outlined'>

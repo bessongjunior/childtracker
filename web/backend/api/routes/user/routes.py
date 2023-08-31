@@ -4,8 +4,9 @@ import logging, os, imghdr
 from functools import wraps
 from http import HTTPStatus
 
-from flask import request, url_for, current_app, abort
+from flask import request, url_for, current_app, abort, send_from_directory
 from flask_restx import Namespace, Resource, fields, reqparse
+from flask_jwt_extended import create_access_token, get_jwt_identity,jwt_required
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 import httpx
@@ -374,8 +375,9 @@ class TrackableDevices(Resource):
             data = response.json()
             print(data)
         
-        return {"success": True, 'res': data}, 200
-
+        # return {"success": True, 'res': data}, 200
+        return {"longitude": '1', "latitude": '1'}, 200
+    
 
 
 # for admin use!!! below
@@ -407,7 +409,55 @@ class AllUsers(Resource):
 
         return result, HTTPStatus.OK
 
+@user_ns.route('/user-info')
+class UserInfo(Resource):
+    '''Resource to gie user data'''
 
+    def get(self):
+        '''Endpoint to provide current user with its data'''
+
+        #modify lter to use token
+        
+        # send_file(filename, mimetype='image/jpeg')
+        
+        _email = 'string'
+        user = Users.get_by_email(_email)
+        filename = f'{user.profile_photo}'
+        id = user.id
+        username = user.username
+        # profile_photo = f'{send_file(filename, mimetype="image/jpeg")}'#f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}"  #image_url, #user.profile_photo,
+        directory = current_app.config["UPLOAD_PICTURE"]
+        profile_phot = f"{send_from_directory(f'{directory}/{user.id}', filename,download_name=filename, mimetype='image/jpg', as_attachment=True)}"
+        email = user.email
+        firstname =user.firstname
+        lastname = user.lastname
+        dob = f'{user.dob}'
+        sex = user.sex
+        province = user.province
+        country = user.country
+
+        return {
+                'id': id,
+                'username': username,
+                'profile_photo': f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}",  #image_url, #user.profile_photo,
+                'email': email,
+                'firstname':firstname,
+                'lastname': lastname,
+                'date_of_birth': dob,
+                'sex': sex,
+                'country': country,
+                'province': province
+            }, HTTPStatus.OK
+
+@user_ns.route('/file')
+class File(Resource):
+    def get(self):
+        # Send a file from the static folder with a MIME type of text/csv
+        file = send_from_directory('static/profile/1', 'default.jpg', mimetype='image/jpg')
+        # Wrap the file in a Response object from Flask-RESTX
+        # return {'img': f'{file}'},200
+        return user_ns.make_response(file, 200)
+    
 @user_ns.route('/test')
 class Test123(Resource):
     '''Design for testing smthg'''

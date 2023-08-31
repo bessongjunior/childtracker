@@ -1,3 +1,19 @@
 https://codesandbox.io/s/mui-profilepage-forked-xzfgy6?file=/src/SuccessSnackbar.js:0-1273
 https://codesandbox.io/s/search-in-react-table-62brk?file=/src/App.js
 https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/hooks
+https://circleci.com/blog/automating-flask-deployments-with-pythonanywhere/
+https://circleci.com/blog/ci-for-machine-learning/
+https://aws.amazon.com/blogs/opensource/automate-python-flask-deployment-to-the-aws-cloud/
+https://aws.amazon.com/blogs/opensource/automate-python-flask-deployment-to-the-aws-cloud/
+https://stackoverflow.com/questions/70898491/how-can-i-view-mui-library-of-components-and-apis-offline
+https://stackoverflow.com/questions/70898491/how-can-i-view-mui-library-of-components-and-apis-offline
+https://fakerjs.dev/guide/usage.html
+
+
+
+
+@app.route("/search", methods=['GET'])
+def search():
+query = request.args.get("query") # here query will be the search inputs name
+allVideos = Videos.query.filter(Videos.title.like("%"+query+"%")).all()
+return render_template("search.html", query=query, allVideos=allVideos)

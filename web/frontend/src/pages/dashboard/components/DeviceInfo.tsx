@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC, Fragment, useState, useEffect } from 'react';
 import Title from './Title';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -11,7 +11,45 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search'
 
+type Device = {
+    devicename: string;
+    serialnumber: string;
+    status: boolean;
+    ownername: string;
+    ownerphone: number;
+    registrar: string;
+
+}
+
 export const FindADeviceInfo: FC = () => {
+
+    const [device, setDevice] = useState<null | Device>(null)
+
+    const [searchInput, setSearchInput] = useState('');
+
+    const accessToken = ''
+
+    useEffect(() => {
+        if (searchInput) {
+          // using Fetch API
+          fetch(`http://127.0.0.1:5000/admin/v1/users/${searchInput}`, {
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}
+          })
+            .then((res) => res.json())
+            .then((device: Device) => setDevice(device)) //{ console.log(device);setDevice(device);})
+            .catch((err) => console.log(err))
+          }
+          // using Axios
+        //   axios.get(`http://127.0.0.1:5000/admin/v1/users/${searchInput}`)
+        //     // .then(response => setDevice(response.data))
+        //     .then((response: Device) => setDevice(response))
+        //     .catch((error) => console.error(error));
+        // }
+        }, [searchInput])
+
+    const handleSearchChange = (_event) => {
+            setSearchInput(_event.target.value);
+    };
 
     return (
         <Fragment>
@@ -22,10 +60,13 @@ export const FindADeviceInfo: FC = () => {
                     size="small"
                     label="Search"
                     sx={{my: '8px'}}
+                    fullWidth
                     type='search'
+                    value={searchInput}
+                    onChange={handleSearchChange}
                     InputProps={{
                     endAdornment: (
-                        <IconButton>
+                        <IconButton onClick={() => setSearchInput('')}>
                             <SearchIcon />
                         </IconButton>
                     )
@@ -39,13 +80,33 @@ export const FindADeviceInfo: FC = () => {
                         <Typography sx={{my: '2px'}}>Active</Typography>
                         <Typography sx={{my: '2px'}}>OwnerName</Typography>
                         <Typography sx={{my: '2px'}}>Phone</Typography>
+                        <Typography sx={{my: '2px'}}>Registrant</Typography>
                     </Stack>
                     <Stack>
-                    <Typography sx={{my: '2px'}}>carzola</Typography>
-                    <Typography sx={{my: '2px'}}>9FG2KFT9</Typography>
-                    <Typography sx={{my: '2px'}}>True</Typography>
-                    <Typography sx={{my: '2px'}}>Jorgensen</Typography>
-                    <Typography sx={{my: '2px'}}>+237 651481602</Typography>
+                    { device ? 
+                    (
+                        <Box>
+                            <Typography sx={{my: '2px'}}>{device.devicename}</Typography>
+                            <Typography sx={{my: '2px'}}>{device.serialnumber}</Typography>
+                            <Typography sx={{my: '2px'}}>{device.status}</Typography>
+                            <Typography sx={{my: '2px'}}>{device.ownername}</Typography>
+                            <Typography sx={{my: '2px'}}>{device.ownerphone}</Typography>
+                            <Typography sx={{my: '2px'}}>{device.registrar}</Typography>
+                        </Box>
+                    ) : 
+                    (
+                        <Box>
+                            {/* <Typography sx={{my: '2px'}}>carzola</Typography>
+                            <Typography sx={{my: '2px'}}>9FG2KFT9</Typography>
+                            <Typography sx={{my: '2px'}}>True</Typography>
+                            <Typography sx={{my: '2px'}}>Jorgensen</Typography>
+                            <Typography sx={{my: '2px'}}>+237 651481602</Typography> */}
+                            <Typography sx={{my: 5, mx: 2}}>No Information</Typography>
+                            <Typography sx={{my: 5, mx: 2}}>Please Search</Typography>
+                        </Box>
+                    )
+                    }
+                        
                     </Stack>
                     </Stack>
                 </Box>

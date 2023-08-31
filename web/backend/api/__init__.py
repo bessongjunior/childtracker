@@ -60,4 +60,8 @@ def after_request(response):
         response.headers.add('Content-Type', 'application/json')
     return response
 
+@app.errorhandler(500)
+def error500():
+    pass
+
 asgi_app = WsgiToAsgi(app)

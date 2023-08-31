@@ -7,9 +7,62 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-
+// type Formdata = {
+//   email: string;
+//   username: string;
+//   devicename: string;
+//   serialnumber: string;
+// }
 
 export const AddDevice: FC = () => {
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   username: data.get('username'),
+    //   email: data.get('email'),
+    //   devicename: data.get('devicename'),
+    //   serailnumber: data.get('serialnumber'),
+    // });
+
+    const target = event.target as typeof event.target & {
+      email: {value: string};
+      username: {value: string};
+      devicename: {value: string};
+      serialnumber: {value: string};
+    };
+    const email = target.email.value; // typechecks!
+    const username = target.username.value; // typechecks!
+    const devicename = target.devicename.value; // typechecks!
+    const serialnumber = target.serialnumber.value; // typechecks!
+
+    const accessToken = ''
+    const res = await fetch('http://127.0.0.1:5000/admin/v1/device/registration',
+    { method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}, //'Content-Type': 'application/json', 
+      // headers: {'Authorization': `${accessToken}`},
+      body: JSON.stringify({email, username, devicename, serialnumber}),
+    })
+    const json = await res.json()
+    console.log(json)
+    if (!res.ok) {console.log('failed')}
+    if (res.ok) {console.log('success')}
+  };
+
+  // useEffect(() => {
+  //   fetch(``,
+  //   { method: 'POST',
+  //     headers: {'Content-Type': 'application/json'}, //'Content-Type': 'application/json', 
+  //     headers: {'Content-Type': 'Bearer '},
+  //     body: JSON.stringify({email, username, devicename, serialnumber}),
+  //     // console.log(`${data}`) 
+  //   }
+  //   )
+  //   .then(res => res.json())
+  //   .then(res => !res.ok? console.log('failed'): console.log('success')) //replace with notif
+  //   .catch((err) => console.log(err))
+  // }, [])
 
     return (
         <Fragment>
@@ -20,17 +73,18 @@ export const AddDevice: FC = () => {
                       <Box
                         component="form"
                         sx={{
-                          // '& .MuiTextField-root': { m: 1, width: '25ch' },
                           display: 'flex',
                           flexDirection: 'column'
                         }}
                         noValidate
                         autoComplete="off"
+                        onSubmit={handleSubmit}
                       >
                         <TextField
                           label="User name"
-                          id="outlined-size-small"
+                          id="username"
                           // defaultValue="username"
+                          name='username'
                           size="small"
                           autoFocus
                           fullWidth
@@ -39,8 +93,8 @@ export const AddDevice: FC = () => {
                         />
                         <TextField
                           label="Email"
-                          id="outlined-size-small"
-                          // defaultValue="username"
+                          id="email"
+                          name='email'
                           size="small"
                           autoFocus
                           fullWidth
@@ -49,8 +103,8 @@ export const AddDevice: FC = () => {
                         />
                         <TextField
                           label="Device name"
-                          id="outlined-size-small"
-                          // defaultValue="username"
+                          id="devicename"
+                          name='devicename'
                           size="small"
                           autoFocus
                           fullWidth
@@ -59,8 +113,8 @@ export const AddDevice: FC = () => {
                         />
                         <TextField
                           label="Serial number"
-                          id="outlined-size-small"
-                          // defaultValue="username"
+                          id="serailnumber"
+                          name='serialnumber'
                           size="small"
                           autoFocus
                           fullWidth

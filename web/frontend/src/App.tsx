@@ -12,7 +12,7 @@
 
 // import { UserProfile } from "./views/dashboard/Profile";
 // import { UserReport } from "./views/dashboard/Report";
-import { UserSettings } from "./views/dashboard/Setting";
+// import { UserSettings } from "./views/dashboard/Setting";
 
 // import { ResetPasscode } from "./pages/Auth/ResetPassword"
 
@@ -21,6 +21,8 @@ import { UserSettings } from "./views/dashboard/Setting";
 
 // import { Profile } from "./pages/Profile/Profile";
 
+// import {StrictMode} from 'react';
+import { Routes } from './router';
 
 function App() {
 
@@ -35,13 +37,16 @@ function App() {
     {/* <Profile /> */}
 
     {/* <UserProfile /> */}
-    <UserSettings />
+    {/* <UserSettings /> */}
     {/* <UserReport /> */}
     {/* <h1>hello</h1> */}
     {/* <UserDashboard /> */}
     {/* <UserSignIn /> */}
     {/* <PasswordReset /> */}
     {/* <UserSignUp /> */}
+      {/* // <StrictMode> */}
+    <Routes />
+      {/* // </StrictMode> */}
     </>
   )
 }
