@@ -10,6 +10,7 @@ import Dashboard from './pages/dashboard';
 import { HomePage } from './views/pages/homepage';
 import { Profile } from './pages/Profile';
 import { Users } from './pages/User';
+import { DashboardLayout } from './layouts/DashboardLayout';
 
 const router = createBrowserRouter([
     {
@@ -25,8 +26,18 @@ const router = createBrowserRouter([
         element: <Users />
     },
     {
-        path: 'admin/profile',
+        path: 'profile',
         element: <Profile />
+    },
+    {
+        path: 'admin',
+        element: <DashboardLayout />,
+        children: [
+            {
+                path: 'profile',
+                element: <Users />//<HomePage />
+            },
+        ]
     }
 ]);
 
