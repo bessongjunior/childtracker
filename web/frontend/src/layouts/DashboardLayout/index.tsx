@@ -1,5 +1,5 @@
 import { FC, Fragment, useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom'; //NavLink,
 
 import Box from '@mui/material/Box';
 // import Grid2 from '@mui/material/Unstable_Grid2';
@@ -20,7 +20,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../AdminSidebar/sidebar';
-// import { mainListItems } from '../AdminSidebar/sidebar';
+
 
 function Copyright() {
     return (
@@ -87,7 +87,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-export const DashboardLayout = () => {
+export const DashboardLayout: FC = () => {
 
     const [open, setOpen] = useState(true);
     const toggleDrawer = () => {

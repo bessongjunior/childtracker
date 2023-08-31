@@ -1,4 +1,4 @@
-import { Fragment, FC} from 'react';
+import { Fragment, FC, } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,9 +13,9 @@ import Card from '@mui/material/Card';
 import CardContent  from '@mui/material/CardContent'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props: any) {
+const Copyright: FC = () => {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="text.secondary" align="center" sx={{mt: 6}}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -121,7 +121,7 @@ export const PasswordReset: FC = ()  =>{
                     </Box>
                 </CardContent>
             </Card>
-            <Copyright sx={{ mt: 6 }} />
+            <Copyright />
         </Container>
         </ThemeProvider>
     </Fragment>

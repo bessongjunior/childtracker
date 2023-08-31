@@ -47,8 +47,8 @@ export const FindADeviceInfo: FC = () => {
         // }
         }, [searchInput])
 
-    const handleSearchChange = (_event) => {
-            setSearchInput(_event.target.value);
+    const handleSearchChange = (event: any) => {
+            setSearchInput(event.target.value);
     };
 
     return (

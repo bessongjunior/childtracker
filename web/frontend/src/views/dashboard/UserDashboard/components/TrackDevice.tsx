@@ -3,8 +3,6 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-// import Title from '../../../../pages/dashboard/components/Title';
-// import CardHeader from '@mui/material/CardHeader';
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -129,7 +127,17 @@ export const TrackDevices: FC = () => {
         }
       ];
 
-      const [location, setLocation] = useState(null);
+    type LocalType ={
+      longitude: string | number;
+      latitude: string | number;
+    }
+
+    type IntType = {
+      lng: number; // | string;
+      lat: number; // | string;
+    }
+
+      const [location, setLocation] = useState<null | LocalType>(null);
 
       useEffect(() => {
         navigator.geolocation.getCurrentPosition((location) => {
@@ -176,7 +184,7 @@ export const TrackDevices: FC = () => {
     //   }, []);
 
 
-    const [position, setPosition] = useState(null);
+    const [position, setPosition] = useState<null | IntType>(null);
 
     useEffect(() => {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -249,10 +257,10 @@ export const TrackDevices: FC = () => {
                                 containerStyle={containerStyle}
                                 google={window.google}
                                 initialCenter={position}
-                                zoom={14}
-                              >
-                                <Marker position={position} />
-                              </Map>
+                                zoom={8}
+                               />
+                                // {/* <Marker position={position} /> */}
+                              // {/* </Map> */}
                             )}
                         </CardContent>
                     </Card>

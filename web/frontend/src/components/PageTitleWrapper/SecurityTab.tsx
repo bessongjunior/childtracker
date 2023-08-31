@@ -32,18 +32,18 @@ import { format, subHours, subWeeks, subDays } from 'date-fns';
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
-     background: ${theme.colors.error.main};
+     background: ${theme.palette.error.main};
      color: ${theme.palette.error.contrastText};
 
      &:hover {
-        background: ${theme.colors.error.dark};
+        background: ${theme.palette.error.dark};
      }
     `
 );
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
-    background: ${theme.colors.success.light};
+    background: ${theme.palette.success.light};
     width: ${theme.spacing(5)};
     height: ${theme.spacing(5)};
 `
@@ -63,8 +63,9 @@ function SecurityTab() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (
-    event: MouseEvent<HTMLButtonElement> | null,
-    newPage: number
+    event: MouseEvent<HTMLButtonElement> | any,
+    newPage: number 
+    // event: MouseEvent<HTMLButtonElement> | null,
   ) => {
     setPage(newPage);
   };
@@ -263,7 +264,7 @@ function SecurityTab() {
                         <IconButton
                           sx={{
                             '&:hover': {
-                              background: theme.colors.error.lighter
+                              background: theme.palette.error.light
                             },
                             color: theme.palette.error.main
                           }}

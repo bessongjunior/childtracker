@@ -19,9 +19,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-function Copyright(props: any) {
+function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="text.secondary" align="center" sx={{mt: 2, mb:2}}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -244,7 +244,7 @@ export const UserSignUp = () => {
                 </Box>
             </CardContent>
         </Card>
-        <Copyright sx={{ mt: 2, mb:2 }} />
+        <Copyright />
       </Container>
     </ThemeProvider>
   );

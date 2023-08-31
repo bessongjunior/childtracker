@@ -92,44 +92,44 @@ def allowed_file(filename):
         return filetype
     # return filetype in allowed_extensions
 
-def token_required(f):
+# def token_required(f):
 
-    @wraps(f)
-    def decorator(*args, **kwargs):
+#     @wraps(f)
+#     def decorator(*args, **kwargs):
 
-        token = None
+#         token = None
 
-        if "authorization" in request.headers:
-            token = request.headers["authorization"]
+#         if "authorization" in request.headers:
+#             token = request.headers["authorization"]
 
-        if not token:
-            return {"success": False, "msg": "Valid JWT token is missing"}, 400
+#         if not token:
+#             return {"success": False, "msg": "Valid JWT token is missing"}, 400
 
-        try:
-            data = jwt.decode(token, BaseConfig.SECRET_KEY, algorithms=["HS256"])
-            current_user = Admin.find_by_email(data["email"])
-            print(current_user[id])
-            # current_user = current_user_id.id
-            print(current_user.email)
+#         try:
+#             data = jwt.decode(token, BaseConfig.SECRET_KEY, algorithms=["HS256"])
+#             current_user = Admin.find_by_email(data["email"])
+#             print(current_user[id])
+#             # current_user = current_user_id.id
+#             print(current_user.email)
 
-            if not current_user:
-                return {"success": False,
-                        "msg": "Sorry. Wrong auth token. This user does not exist."}, 400
+#             if not current_user:
+#                 return {"success": False,
+#                         "msg": "Sorry. Wrong auth token. This user does not exist."}, 400
 
-            token_expired = db.session.query(JWTTokenBlocklist.id).filter_by(jwt_token=token).scalar()
+#             token_expired = db.session.query(JWTTokenBlocklist.id).filter_by(jwt_token=token).scalar()
 
-            if token_expired is not None:
-                return {"success": False, "msg": "Token revoked."}, 400
+#             if token_expired is not None:
+#                 return {"success": False, "msg": "Token revoked."}, 400
 
-            if not current_user.check_jwt_auth_active():
-                return {"success": False, "msg": "Token expired."}, 400
+#             if not current_user.check_jwt_auth_active():
+#                 return {"success": False, "msg": "Token expired."}, 400
 
-        except:
-            return {"success": False, "msg": "Token is invalid"}, 400
+#         except:
+#             return {"success": False, "msg": "Token is invalid"}, 400
 
-        return f(current_user, *args, **kwargs)
+#         return f(current_user, *args, **kwargs)
 
-    return decorator
+#     return decorator
 
 
 ''' Routes '''
@@ -257,10 +257,10 @@ class LogoutAdmin(Resource):
 
     # @token_required
     @jwt_required
-    def post(self): #, current_user
-        '''Admin Logout endpoint'''
+    def post(self):
+        """Endpoint for admin to logout"""
 
-        # _JWT_token = request.headers.get('Authorization')
+        _JWT_token = request.headers.get('Authorization')
         # _jwt_token = request.headers["authorization"]
         current_user = get_jwt_identity()
 
@@ -303,7 +303,7 @@ class EditAdminDetails(Resource):
     # @token_required
     @jwt_required()
     def patch(self):
-        '''Admin Logout endpoint'''
+        '''Admin endpoint to edit personal details'''
 
         req_data = request.get_json()
         current_user = get_jwt_identity()

@@ -1,16 +1,13 @@
 import { Suspense, lazy } from 'react';
 // import { Navigate } from 'react-router-dom';
-import { RouteObject } from 'react-router';
-
+// import { RouteObject } from 'react-router';
 import SuspenseLoader from './components/SuspenseLoader';
-
-
 import {createBrowserRouter, RouterProvider } from 'react-router-dom'; 
-// import {Dashboard} from './pages/dashboard';
 import { HomePage } from './views/pages/homepage';
-// import { Profile } from './pages/Profile';
-// import { Users } from './pages/User';
 import { DashboardLayout } from './layouts/DashboardLayout';
+import { SignIn } from './pages/Auth/Signin';
+import { SignUp } from './pages/Auth/Signup';
+import { ResetPasscode } from './pages/Auth/ResetPassword';
 
 
 const Dashboard = lazy(() => import('./pages/dashboard'));
@@ -27,10 +24,18 @@ const Users = lazy(() => import('./pages/User'));
     // )
 
 const router = createBrowserRouter([
-    // {
-    // path: 'admin/dashboard',
-    // element: <Dashboard />,
-    // },
+    {
+        path: 'admin/signin',
+        element: <SignIn />,
+    },
+    {
+        path: 'admin/signup',
+        element: <SignUp />
+    },
+    {
+        path: 'admin/passcode-reset',
+        element: <ResetPasscode />
+    },
     {
         path: '/',
         element: <HomePage />

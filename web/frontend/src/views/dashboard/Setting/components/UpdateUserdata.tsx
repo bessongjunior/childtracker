@@ -16,8 +16,8 @@ import Typography from '@mui/material/Typography';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+// import IconButton from '@mui/material/IconButton';
+// import CloseIcon from '@mui/icons-material/Close';
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -100,7 +100,7 @@ export const UpdateDetails: FC = () => {
                 <Button variant="text" onClick={handleClickOpen} startIcon={<EditTwoToneIcon />}>
                   Edit
                 </Button>
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog open={open} onClose={() => {handleClose;handlestateClick}}>
                   <DialogTitle>update Personal Details</DialogTitle>
                   <DialogContent>
                     <DialogContentText>
@@ -144,8 +144,8 @@ export const UpdateDetails: FC = () => {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3 }}
-                        // onClick={() => {handlestateClick; handleClose; }}
-                        onClick={handlestateClick}
+                        onClick={() => {handlestateClick; handleClose; }}
+                        // onClick={handlestateClick}
                       >
                         update credentials
                       </Button>
@@ -158,6 +158,12 @@ export const UpdateDetails: FC = () => {
                     {/* <Button onClick={handleClose}>Subscribe</Button> */}
                   </DialogActions>
                 </Dialog>
+
+                <Snackbar open={state} autoHideDuration={6000} onClose={handlestateClose}>
+                  <Alert onClose={handlestateClose} severity="success" sx={{ width: '100%' }}>
+                    This is a success message!
+                  </Alert>
+                </Snackbar>
               </Box>
 
             </Box>

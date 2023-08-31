@@ -7,7 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -27,9 +27,9 @@ export const ResetPasscode: FC = () => {
 
     return (
         <Fragment>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="xs" >
                 <CssBaseline />
-                <Card sx={{ mt: 10 }}>
+                <Card sx={{ mt: 18, backgroundColor: '#fffff' }}>
                     <CardContent>
                         <Box
                             sx={{
@@ -43,7 +43,7 @@ export const ResetPasscode: FC = () => {
                                 <LockOutlinedIcon />
                             </Avatar>
                             <Typography component="h1" variant="h5">
-                                Reset Password
+                                Admin Reset Password
                             </Typography>
                             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                                 <Grid container spacing={2}>
@@ -91,7 +91,7 @@ export const ResetPasscode: FC = () => {
                                 >
                                     Sign Up
                                 </Button>
-                                <Grid container justifyContent="Space-between">
+                                {/* <Grid container justifyContent="Space-between">
                                 <Grid item>
                                         <Link href="#" variant="body2">
                                             Create Account
@@ -102,7 +102,7 @@ export const ResetPasscode: FC = () => {
                                             Recall or Don't? Sign in
                                         </Link>
                                     </Grid>
-                                </Grid>
+                                </Grid> */}
                             </Box>
                         </Box>
                     </CardContent>

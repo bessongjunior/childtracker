@@ -46,9 +46,9 @@ export const AddDevice: FC = () => {
     })
     const json = await res.json()
     console.log(json)
-    if (!res.ok) {console.log('failed')}
-    if (res.ok) {console.log('success')}
-  };
+    if (!res.ok) {console.log('failed');}
+    if (res.ok) {console.log('success');}
+  }
 
   // useEffect(() => {
   //   fetch(``,

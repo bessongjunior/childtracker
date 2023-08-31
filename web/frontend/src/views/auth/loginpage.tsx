@@ -232,7 +232,7 @@
 
 // // export default Basic;
 
-import { FC, Fragment, ReactNode } from 'react';
+import { FC, Fragment } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -251,9 +251,9 @@ import Card from '@mui/material/Card';
 // interface StyleProps {
 //   props : ReactNode
 // }
-const Copyright = (props) => {
+const Copyright = () => {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="text.secondary" align="center" sx={{mt: 5}}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -365,7 +365,7 @@ export const UserSignIn: FC = () => {
                         </Link>
                       </Grid>
                     </Grid>
-                    <Copyright sx={{ mt: 5 }} />
+                    <Copyright />
                   </Box>
                 </Box>
               </Grid>

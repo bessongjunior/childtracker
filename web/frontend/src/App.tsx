@@ -1,84 +1,14 @@
-// import { SignIn } from "./pages/Auth/Signin";
-// import { SignUp } from "./pages/Auth/Signup";
-// import { LoginPage } from "./views/auth/loginpage";
-// https://www.youtube.com/watch?v=GcrNHMcL-WM&list=PLnHJACx3NwAep5koWkniVHw8PK7dWCO21&pp=iAQB
-
-// import UserSignUp from "./views/auth/registerpage"
-
-
-// import { UserSignIn } from "./views/auth/loginpage"
-// import { PasswordReset } from "./views/auth/passwordresetpage"
-// import { UserDashboard } from "./views/dashboard/UserDashboard"
-
-// import { UserProfile } from "./views/dashboard/Profile";
-// import { UserReport } from "./views/dashboard/Report";
-// import { UserSettings } from "./views/dashboard/Setting";
-
-// import { ResetPasscode } from "./pages/Auth/ResetPassword"
-
-// import Dashboard from "./pages/dashboard/Dashboard";
-// import { Users } from "./pages/User/Users"
-
-// import { Profile } from "./pages/Profile/Profile";
-
-// import {StrictMode} from 'react';
+import {Fragment} from 'react';
 import { Routes } from './router';
 
-function App() {
+export default function App() {
 
   return (
-    <>
-    {/* <SignUp /> */}
-    {/* <ResetPasscode /> */}
-    {/* <LoginPage /> */}
-    {/* <Dashboard /> */}
-    {/* <Users /> */}
-    {/* <AllDevices /> */}
-    {/* <Profile /> */}
-
-    {/* <UserProfile /> */}
-    {/* <UserSettings /> */}
-    {/* <UserReport /> */}
-    {/* <h1>hello</h1> */}
-    {/* <UserDashboard /> */}
-    {/* <UserSignIn /> */}
-    {/* <PasswordReset /> */}
-    {/* <UserSignUp /> */}
-      {/* // <StrictMode> */}
-    <Routes />
-      {/* // </StrictMode> */}
-    </>
+    <Fragment>
+      <Routes />
+      {/* <h1>welcome</h1> */}
+    </Fragment>
   )
 }
 
-export default App
-
-
-// import './App.css'
-// // import { useState } from 'react'
-// // import reactLogo from './assets/react.svg'
-// // import viteLogo from '/vite.svg'
-
-//   // const [count, setCount] = useState(0)
-// {/* <>
-//       <div>
-//         <a href="https://vitejs.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </> */}
+// export default App

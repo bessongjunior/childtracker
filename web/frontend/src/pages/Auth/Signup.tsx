@@ -1,4 +1,5 @@
-import * as React from 'react';
+import {FC, Fragment, useState, FormEvent} from 'react';
+import { useSignup } from '../../hooks/useRegister';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,38 +18,36 @@ import { Card, CardContent } from '@mui/material';
 // https://tomchentw.github.io/react-google-maps/
 
 
-// function Copyright(props: any) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
-
 // TODO remove, this demo shouldn't need to reset the theme.
 // const defaultTheme = createTheme();
 
-export const SignUp = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+export const SignUp: FC = () => {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [first_name, SetFirstname] = useState('')
+  const [last_name, setLastname] = useState('')
+  const [admin_username, setUsername] = useState('')
+  // const [terms, setTerms] = useState('')
+  const {signup, error, isLoading} = useSignup()
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
+
+    await signup({ last_name, first_name, admin_username, email, password })
   };
 
   return (
     // <ThemeProvider theme={defaultTheme}>
-    <>
+    <Fragment>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Card sx={{mt: 6}}>
+        <Card sx={{mt: 10}}>
           <CardContent>
             <Box
               sx={{
@@ -62,20 +61,22 @@ export const SignUp = () => {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign up
+                Sign Up Administrator 
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="given-name"
-                      name="firstName"
+                      name="first_name"
                       required
                       fullWidth
                       id="firstName"
                       label="First Name"
                       autoFocus
                       size='small'
+                      value={first_name}
+                      onChange={(e) => SetFirstname(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -84,20 +85,24 @@ export const SignUp = () => {
                       fullWidth
                       id="lastName"
                       label="Last Name"
-                      name="lastName"
+                      name="last_ame"
                       // autoComplete="family-name"
                       size='small'
+                      value={last_name}
+                      onChange={(e) => setLastname(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
-                      name="UserName"
+                      name="admin_sername"
                       label="Username"
                       type="text"
                       id="UserName"
                       size='small'
+                      value={admin_username}
+                      onChange={(e) => setUsername(e.target.value)}
                     //   autoComplete="new-password"
                     />
                   </Grid>
@@ -110,6 +115,8 @@ export const SignUp = () => {
                       name="email"
                       autoComplete="email"
                       size='small'
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -122,12 +129,17 @@ export const SignUp = () => {
                       id="password"
                       autoComplete="new-password"
                       size='small'
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <FormControlLabel
                       control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="I agree to the terms and conditions"
+                      label={<div>I agree to the <a href=''>terms</a> and <a href=''>conditions</a></div>}
+                      // value={terms} 
+                      // onChange={(e) => setTerms(e.target.value)}
+                      // change a tag with MUI links later
                     />
                   </Grid>
                 </Grid>
@@ -135,10 +147,12 @@ export const SignUp = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 3, mb: 2 }} 
+                  disabled={isLoading ? true : false}
                 >
                   Sign Up
                 </Button>
+                {error && <Box className="error">{error}</Box>}
                 <Grid container justifyContent="flex-end">
                   <Grid item>
                     <Link href="#" variant="body2">
@@ -152,7 +166,9 @@ export const SignUp = () => {
         </Card>
         {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
-      </>
+    </Fragment>
     // </ThemeProvider>
   );
 }
+
+// export const SignUp = () => <h1>Hello</h1>

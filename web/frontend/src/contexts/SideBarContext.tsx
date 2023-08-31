@@ -49,8 +49,8 @@ export const SidebarControllerProvider = ({ children }: SidebarControllerProvide
 //   children: PropTypes.node.isRequired,
 // }; // not needed since a type is defined above!
 
-export const setMiniSidenav = (dispatch: Dispatch<SidebarContextAction>, value: boolean) => dispatch({ type: "MINI_SIDENAV", value });
-export const setLayout = (dispatch: Dispatch<SidebarContextAction>, value: string) => dispatch({ type: "LAYOUT", value });
+// export const setMiniSidenav = (dispatch: Dispatch<SidebarContextAction>, value: boolean) => dispatch({ type: "MINI_SIDENAV", value });
+// export const setLayout = (dispatch: Dispatch<SidebarContextAction>, value: string) => dispatch({ type: "LAYOUT", value });
 
 
 // type SidebarContext = {

@@ -130,7 +130,7 @@ export const ProfileCover: FC<{ user: {
           </CardCoverAction>
         </CardCover>
         <AvatarWrapper>
-          <Avatar variant="rounded" alt={user.name} src={user.profile_photo} />
+          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
           <ButtonUploadWrapper>
             <Input
               accept="image/*"

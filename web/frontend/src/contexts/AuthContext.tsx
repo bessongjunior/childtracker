@@ -9,7 +9,7 @@ interface User {
     email: string;
   };
   jwtToken: string;
-  imageUrl: string;
+  // imageUrl: string;
 }
 
 type AuthState = {
