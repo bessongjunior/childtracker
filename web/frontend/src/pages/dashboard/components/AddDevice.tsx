@@ -40,8 +40,7 @@ export const AddDevice: FC = () => {
     const accessToken = ''
     const res = await fetch('http://127.0.0.1:5000/admin/v1/device/registration',
     { method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}, //'Content-Type': 'application/json', 
-      // headers: {'Authorization': `${accessToken}`},
+      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`},
       body: JSON.stringify({email, username, devicename, serialnumber}),
     })
     const json = await res.json()

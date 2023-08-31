@@ -238,12 +238,11 @@ class ResetPassword(Resource):
             # add logs
             return {
                 "success": False,
-                "msg": f"Sorry Your email: {_email}is not Found."
-            }, HTTPStatus.BAD_REQUEST
+                "msg": f"Sorry Your email: {_email} is not Found."
+            }, HTTPStatus.UNPROCESSABLE_ENTITY
         
         # Hashing password before saving in database
-
-        check_mail.password = self.set_password(_new_password)
+        check_mail.set_password(_new_password)
 
         db.session.commit()
 

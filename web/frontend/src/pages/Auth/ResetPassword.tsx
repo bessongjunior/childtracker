@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,7 +7,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-// import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -16,14 +15,44 @@ import Typography from '@mui/material/Typography';
 
 
 export const ResetPasscode: FC = () => {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+    const [valueerr, setValueerr] = useState<null | string>(null)
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
           email: data.get('email'),
           password: data.get('password'),
         });
+
+        const target = event.target as typeof event.target & {
+            email: {value: string};
+            password: {value: string};
+            confirmpassword: {value: string};
+          };
+          const email = target.email.value; // typechecks!
+          const password = target.password.value; // typechecks!
+          const confirmpassword = target.password.value;// typechecks!
+
+          if (password != confirmpassword) {
+            setValueerr(valueerr)
+            console.log('password mismatch')
+        }
+        if (password === confirmpassword) {
+            const res = await fetch('http://127.0.0.1:5000/admin/v1/resetpassword',
+                { method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password}),
+                })
+            const json = await res.json()
+            console.log(json)
+            if (res.status != 202) {console.log('failed');}
+            if (res.status === 202) {console.log('success');
+            }
+        }
     };
+
 
     return (
         <Fragment>
@@ -62,7 +91,7 @@ export const ResetPasscode: FC = () => {
                                         <TextField
                                             required
                                             fullWidth
-                                            name="newpassword"
+                                            name="password"
                                             label="Password"
                                             type="password"
                                             id="password"
@@ -74,7 +103,7 @@ export const ResetPasscode: FC = () => {
                                         <TextField
                                             required
                                             fullWidth
-                                            name="newpassword"
+                                            name="confirmpassword"
                                             label="Confirm Password"
                                             type="password"
                                             id="newpassword"
