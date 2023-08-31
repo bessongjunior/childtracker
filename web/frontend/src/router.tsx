@@ -1,4 +1,4 @@
-// import { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 // import { Navigate } from 'react-router-dom';
 // import { RouteObject } from 'react-router';
 
@@ -8,8 +8,8 @@
 import {createBrowserRouter, RouterProvider } from 'react-router-dom'; 
 import Dashboard from './pages/dashboard';
 import { HomePage } from './views/pages/homepage';
-import { UserDashboard } from './views/dashboard/UserDashboard';
 import { Profile } from './pages/Profile';
+import { Users } from './pages/User';
 
 const router = createBrowserRouter([
     {
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     },
     {
         path: 'admin/users',
-        element: <UserDashboard />
+        element: <Users />
     },
     {
         path: 'admin/profile',

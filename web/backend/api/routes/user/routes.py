@@ -382,32 +382,32 @@ class TrackableDevices(Resource):
 
 # for admin use!!! below
 
-@user_ns.route('/v1/allusers')
-class AllUsers(Resource):
-    '''Resource endpoint to get user informations'''
+# @user_ns.route('/v1/allusers')
+# class AllUsers(Resource):
+#     '''Resource endpoint to get user informations'''
 
-    @user_ns.marshal_with(alluser_model)
-    def get(self):
-        '''get all users in db, without pagination'''
+#     @user_ns.marshal_with(alluser_model)
+#     def get(self):
+#         '''get all users in db, without pagination'''
 
-        users = Users.query.all()
-        result = []
-        # image_url = url_for('static', filename=f'profile/{users.profile_photo}', _external=True)
+#         users = Users.query.all()
+#         result = []
+#         # image_url = url_for('static', filename=f'profile/{users.profile_photo}', _external=True)
 
-        for user in users:
-            result.append({
-                'id': user.id,
-                'username': user.username,
-                'profile_photo': f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}",  #image_url, #user.profile_photo,
-                'email': user.email,
-                'firstname':user.firstname,
-                'lastname': user.lastname,
-                'date_joined': user.date_joined,
-                'sex': user.sex,
-                'country': user.country
-            })
+#         for user in users:
+#             result.append({
+#                 'id': user.id,
+#                 'username': user.username,
+#                 'profile_photo': f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}",  #image_url, #user.profile_photo,
+#                 'email': user.email,
+#                 'firstname':user.firstname,
+#                 'lastname': user.lastname,
+#                 'date_joined': user.date_joined,
+#                 'sex': user.sex,
+#                 'country': user.country
+#             })
 
-        return result, HTTPStatus.OK
+#         return result, HTTPStatus.OK
 
 @user_ns.route('/user-info')
 class UserInfo(Resource):

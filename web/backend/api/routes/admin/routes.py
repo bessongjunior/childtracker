@@ -53,6 +53,17 @@ all_devices_model = admin_ns.model('AllDevicesModel', {
      'owner': fields.String()
 })
 
+alluser_model = admin_ns.model('AllUsers', {
+    "id": fields.Integer(),
+    "username": fields.String(),
+    "email": fields.String(),
+    "firstname": fields.String(),
+    "lastname": fields.String(),
+    'profile_photo': fields.String(),
+    'date_joined': fields.String(),
+    'sex': fields.String(),
+    'country': fields.String()
+})
 
 assign_device_model = admin_ns.model('AssignDeviceModel', {
                                         "devicename": fields.String(),
@@ -204,7 +215,7 @@ class LoginAdmin(Resource):
         return {"success": True,
                 "token": access_token,
                 "user": admin_exists.toJSON(),
-                "image_url": image_url
+                # "image_url": image_url
                 }, HTTPStatus.CREATED
 
 
@@ -276,7 +287,7 @@ class AdminUserInfo(Resource):
                 'date_joined': f'{admin_info.date_joined}',
                 'email': admin_info.email,
                 'name': admin_info.admin_username,
-                'image_url': 'string;',
+                'image_url':  url_for('static', filename=f'profile/admin/{admin_info.profile}', _external=True),
                 'username': f"{admin_info.first_name} {admin_info.last_name}",
                 'location': 'Cameroon',
         }
@@ -441,7 +452,7 @@ class RegisterUserDevice(Resource):
         return {"success": True, "msg": "Device attributed to user"}, HTTPStatus.CREATED
 
 
-@admin_ns.route('/alldevices')
+@admin_ns.route('/v1/alldevices')
 class UserDevices(Resource):
     '''Return all devices and username in db'''
 
@@ -494,6 +505,36 @@ class SearchUser(Resource):
         if results:
             return res, 200
             
+
+@admin_ns.route('/v1/users/allusers')
+class AllUsers(Resource):
+    '''Resource endpoint to get user informations'''
+
+    @admin_ns.marshal_with(alluser_model)
+    @jwt_required()
+    def get(self):
+        '''get all users in db, without pagination'''
+
+        users = Users.query.all()
+        result = []
+        # image_url = url_for('static', filename=f'profile/{users.profile_photo}', _external=True)
+
+        for user in users:
+            result.append({
+                'id': user.id,
+                'username': user.username,
+                'profile_photo': f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}",  #image_url, #user.profile_photo,
+                'email': user.email,
+                'firstname':user.firstname,
+                'lastname': user.lastname,
+                'date_joined': user.date_joined,
+                'sex': user.sex,
+                'country': user.country
+            })
+
+        return result, HTTPStatus.OK
+
+
 
 @admin_ns.route('/v1/device/<search_term>')
 class SearchDeviceInfo(Resource):

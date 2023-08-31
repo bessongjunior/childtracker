@@ -66,8 +66,13 @@ export const AllDevices: FC = () => {
 
   const [data, setData] = useState([]);
 
+  const accessToken = ''
+
   useEffect(() => {
-      fetch("http://127.0.0.1:5000/admin/alldevices")
+      fetch("http://127.0.0.1:5000/admin/v1/alldevices",
+      {
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}
+    })
         .then((res) => res.json())
         .then((res) => { console.log(res); setData(res); })
         .catch((err) => console.log(err))

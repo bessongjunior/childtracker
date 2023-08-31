@@ -28,7 +28,7 @@ type DataTypes = {
 export const ProfileInfo: FC = () => {
     
     const [data, setData] = useState<DataTypes | null>(null)
-    const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MzQ0MDAwMCwianRpIjoiMDIzZjQwNDAtOTljZi00NDFjLTg1ZTMtYWFhNGUwOWViNWYyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Imp1bmlvcmJAZ21haWwuY29tIiwibmJmIjoxNjkzNDQwMDAwLCJleHAiOjE2OTM0NDM2MDB9.ief1B8t9RrEEj5DGY3tj3hqcJTx96s9apYkKgez_cDU'
+    const accessToken = ''
 
     useEffect(() => {
         fetch('http://127.0.0.1:5000/admin/v1/profile-info', 
@@ -57,7 +57,7 @@ export const ProfileInfo: FC = () => {
                                 <Avatar
                                     alt={data.username}
                                     // src="../../assets/images/defaults.jpg"
-                                    src={ !data ? defaults : data.image_url }
+                                    src={ data && data.image_url != null ? data.image_url : defaults }
                                     sx={{ width: 100, height: 100 }}
                                 />
                                 <Typography sx={{ alignContent: 'center' }} variant="h5" component="div">
