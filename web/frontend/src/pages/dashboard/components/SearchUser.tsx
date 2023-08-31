@@ -29,7 +29,7 @@ export const UserInfo: FC = () => {
   const [person, setPerson] = useState<null | Person>(null) //same as below
   // const [person, setPerson] = useState<Person>({} as Person);
 
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState(''); //cld be replace with serchparams from react-router-dom
 
   const accessToken = ''
    

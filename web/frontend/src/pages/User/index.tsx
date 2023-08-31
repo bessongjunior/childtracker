@@ -4,7 +4,7 @@ import { AllDevices } from './components/AllDevices';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 
-export const Users: FC = () => {
+const Users: FC = () => {
     return (
         // <ThemeProvider theme={defaultTheme}>
         <Fragment>
@@ -24,4 +24,4 @@ export const Users: FC = () => {
 }
 
 
-
+export default Users;
