@@ -12,11 +12,13 @@ type Register = {
 export const useSignup = () => {
   const [error, setError] = useState<null | string>(null)
   const [isLoading, setIsLoading] = useState<null | boolean>(null)
+  const [success, setSuccess] = useState<null | boolean>(null)
   const { dispatch } = useAuthContext()
 
   const signup = async ({first_name, last_name, admin_username, email, password}: Register) => {
     setIsLoading(true)
     setError(null)
+    setSuccess(false)
 
     const response = await fetch('http://127.0.0.1:5000/admin/v1/register', {
       method: 'POST',
@@ -39,8 +41,11 @@ export const useSignup = () => {
 
       // update loading state
       setIsLoading(false)
+
+      // to auto navigate to login
+      setSuccess(true)
     }
   }
 
-  return { signup, isLoading, error }
+  return { signup, isLoading, error, success }
 }

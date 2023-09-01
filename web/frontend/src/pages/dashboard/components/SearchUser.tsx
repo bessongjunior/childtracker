@@ -1,4 +1,4 @@
-import { FC, Fragment, useState, useEffect } from 'react';
+import { FC, Fragment, useState, useEffect, ChangeEvent } from 'react';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -10,8 +10,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 // import axios from 'axios';
-
 import Title from './Title';
+// import { useAuthContext } from '../../../hooks/useAuthContext';
 
 
 type Person = {
@@ -26,19 +26,19 @@ type Person = {
 
 export const UserInfo: FC = () => {
 
+  // const {user} = useAuthContext()
+
   const [person, setPerson] = useState<null | Person>(null) //same as below
   // const [person, setPerson] = useState<Person>({} as Person);
 
-  const [searchInput, setSearchInput] = useState(''); //cld be replace with serchparams from react-router-dom
-
-  const accessToken = ''
-   
+  const [searchInput, setSearchInput] = useState(''); //cld be replace with serchparams from react-router-dom  
 
   useEffect(() => {
     if (searchInput) {
       // using Fetch API
-      fetch(`http://127.0.0.1:5000/admin/v1/device/${searchInput}`, {
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      fetch(`http://127.0.0.1:5000/admin/v1/users/${searchInput}`, {
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}`}
       })
         .then((res) => res.json())
         .then((person: Person) => setPerson(person))  //{ console.log(person);setPerson(person);})
@@ -52,7 +52,7 @@ export const UserInfo: FC = () => {
     // }
     }, [searchInput])
 
-  const handleSearchChange = (event: any) => {
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSearchInput(event.target.value);
   };
 

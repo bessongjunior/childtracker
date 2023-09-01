@@ -41,6 +41,7 @@ export const useLogin = () => {
       setIsLoading(false)
     }
     if (response.status === 201) {
+      // to auto navigate to login
       setSuccess(true)
     }
   }

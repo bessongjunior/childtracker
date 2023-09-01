@@ -64,9 +64,9 @@ const EditProfileTab: FC = () => {
     if (reason === 'clickaway') {
       return;
     }
-
     setState(false);
   };
+
 
   return (
     <Fragment>
@@ -134,16 +134,16 @@ const EditProfileTab: FC = () => {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3 }}
-                        onClick={() => {handleClose; handlestateClick;}}
-                        // onClick={handleClose}
+                        // onClick={() => {handleClose; handlestateClick;}}
+                        onClick={handleClose}
                       >
                         update
                       </Button>
-                      <Snackbar open={state} autoHideDuration={6000} onClose={handlestateClose}>
+                      {/* <Snackbar open={state} autoHideDuration={6000} onClose={handlestateClose}>
                         <Alert onClose={handlestateClose} severity="success" sx={{ width: '100%' }}>
                           This is a success message!
                         </Alert>
-                      </Snackbar>
+                      </Snackbar> */}
                     </Box>
                   </DialogContent>
                   <DialogActions>

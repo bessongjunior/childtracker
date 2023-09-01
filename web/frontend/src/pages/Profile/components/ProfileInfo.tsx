@@ -15,7 +15,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { useAuthContext } from '../../../hooks/useAuthContext';
+// import { useAuthContext } from '../../../hooks/useAuthContext';
 
 type DataTypes = {
     date_joined: string;
@@ -29,13 +29,14 @@ type DataTypes = {
 export const ProfileInfo: FC = () => {
     
     const [data, setData] = useState<DataTypes | null>(null)
-    const {user} = useAuthContext()
-    console.log(user?.token)
+    // const {user} = useAuthContext()
+    // console.log(user?.token)
 
     useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
         fetch('http://127.0.0.1:5000/admin/v1/profile-info', 
         {
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user?.token}`}
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}`}
         })
         .then((res) => res.json())
         .then((data: DataTypes) => {
@@ -59,7 +60,8 @@ export const ProfileInfo: FC = () => {
                                 <Avatar
                                     alt={data.username}
                                     // src="../../assets/images/defaults.jpg"
-                                    src={ data && data.image_url != null ? data.image_url : defaults }
+                                    // src={ data && data.image_url != null ? data.image_url : defaults }
+                                    src={defaults}
                                     sx={{ width: 100, height: 100 }}
                                 />
                                 <Typography sx={{ alignContent: 'center' }} variant="h5" component="div">

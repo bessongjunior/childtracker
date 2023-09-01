@@ -203,7 +203,7 @@ class LoginAdmin(Resource):
         # create access token uwing JWT
         token = jwt.encode({'email': _email, 'exp': datetime.utcnow() + timedelta(minutes=30)}, BaseConfig.SECRET_KEY)
 
-        access_token = create_access_token(identity=_email)
+        access_token = create_access_token(identity=_email, expires_delta=timedelta(minutes=45))
 
         admin_exists.set_jwt_auth_active(True)
         admin_exists.save()
@@ -549,24 +549,26 @@ class AllUsers(Resource):
 class SearchDeviceInfo(Resource):
     '''Resource endpoint to get details of a particular device'''
 
-    @jwt_required()
+    # @jwt_required()
     def get(self, search_term):
         '''endpoint to return a particular device information'''
 
-        results = Devices.query.filter(or_(Devices.name.like('%'+search_term+'%'), Devices.serial_number.like('%'+search_term+'%')))
+        results = Devices.query.filter(or_(Devices.name.like('%'+search_term+'%'), Devices.serial_number.like('%'+search_term+'%'))).first()
         if not results:
             return {'success': False, 'msg': f'{search_term} not found, try again!'}, 404
+        print(f'{results.admin_id}')
         
         res = {
                 'devicename': results.name,
                 'serialnumber': results.serial_number,
-                'status': results.task,
-                'ownername': f"{results.users.firstname} {results.users.lastname}",#results.users.username,
+                'status': f'{results.task}',
+                'ownername': f"{results.users.firstname} {results.users.lastname}",
                 'ownerphone': results.users.phone_number,
-                'registrar': results.admin.username
+                'registrar':  f'{results.admin_id}'   # f"{Admin.find_by_id(results.admin_id).email}"  # results.admin.email
             }
         
         if results:
+            print(res)
             return res, 200
 
 

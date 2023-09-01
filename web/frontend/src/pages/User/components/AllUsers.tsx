@@ -17,7 +17,7 @@ export const AllUsers: FC = () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-        console.log('done', user, user.token)
+        // console.log('done', user, user.token)
         fetch("http://127.0.0.1:5000/admin/v1/users/allusers",
         {
             headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}`}

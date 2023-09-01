@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Card, CardContent } from '@mui/material';
+import { Navigate } from 'react-router-dom';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 // https://www.youtube.com/watch?v=CrHQBzwus3s&list=PLMr94OOKrgmsTN1ZRxKyDMfBGmgRg_a8_
 // https://tomchentw.github.io/react-google-maps/
@@ -28,8 +29,8 @@ export const SignUp: FC = () => {
   const [first_name, SetFirstname] = useState('')
   const [last_name, setLastname] = useState('')
   const [admin_username, setUsername] = useState('')
-  // const [terms, setTerms] = useState('')
-  const {signup, error, isLoading} = useSignup()
+  const [terms, setTerms] = useState<boolean>(false)
+  const {signup, error, isLoading, success} = useSignup()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,7 +41,13 @@ export const SignUp: FC = () => {
     // });
 
     await signup({ last_name, first_name, admin_username, email, password })
+
   };
+
+  if (success === true) {
+    console.log('success');
+    return <Navigate to='/admin/signin' />
+  }
 
   return (
     // <ThemeProvider theme={defaultTheme}>
@@ -86,7 +93,6 @@ export const SignUp: FC = () => {
                       id="lastName"
                       label="Last Name"
                       name="last_ame"
-                      // autoComplete="family-name"
                       size='small'
                       value={last_name}
                       onChange={(e) => setLastname(e.target.value)}
@@ -103,7 +109,6 @@ export const SignUp: FC = () => {
                       size='small'
                       value={admin_username}
                       onChange={(e) => setUsername(e.target.value)}
-                    //   autoComplete="new-password"
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -137,9 +142,8 @@ export const SignUp: FC = () => {
                     <FormControlLabel
                       control={<Checkbox value="allowExtraEmails" color="primary" />}
                       label={<div>I agree to the <a href=''>terms</a> and <a href=''>conditions</a></div>}
-                      // value={terms} 
-                      // onChange={(e) => setTerms(e.target.value)}
-                      // change a tag with MUI links later
+                      value={terms} 
+                      onChange={() => setTerms(!terms)}
                     />
                   </Grid>
                 </Grid>
@@ -171,4 +175,3 @@ export const SignUp: FC = () => {
   );
 }
 
-// export const SignUp = () => <h1>Hello</h1>

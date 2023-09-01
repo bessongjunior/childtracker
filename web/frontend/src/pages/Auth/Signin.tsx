@@ -11,26 +11,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useLogin} from '../../hooks/useLogin';
 import { Navigate } from 'react-router-dom';
-// import { Navigate} from 'react-router-dom';
-// import { Redirect } from 'react-router-dom';
-// import { redirect } from 'react-router-dom';
-// type Login
+
 
 export const SignIn: FC = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [terms, setTerms] = useState<boolean>(false)
   const {login, error, isLoading, success} = useLogin()
-  // const [errors, setErrors] = useState<undefined | string>(undefined)
-  // const navigate = useNavigate()
+
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
     // if (email === "") {
     //   return setErrors("You must enter your email.");
     // }
@@ -40,11 +32,6 @@ export const SignIn: FC = () => {
 
     await login({email, password})
 
-    if (success === true) {
-      console.log('success');
-      // redirect('/admin/dashboard');
-    }
-    // return redirect('/admin/dashboard') 
   };
 
   if (success === true) {
@@ -101,6 +88,8 @@ export const SignIn: FC = () => {
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
+              value={terms} 
+              onChange={() => setTerms(!terms)}
             />
             <Button
               type="submit"

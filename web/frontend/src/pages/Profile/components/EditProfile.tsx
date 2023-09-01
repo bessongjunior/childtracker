@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC, Fragment, forwardRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -6,8 +6,36 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 // import { Card, CardContent, Button, TextField } from '@mui/material';
+// import { useAuthContext } from '../../../hooks/useAuthContext';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
 
 export const EditProfile: FC = () => {
+
+    // const {user} = useAuthContext()
+    const [state, setState] = useState<boolean>(false);
+
+  const handlestateClick = () => {
+    setState(true);
+  };
+
+  const activateSnack = () => handlestateClick;
+
+  const handlestateClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setState(false);
+  };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -27,17 +55,17 @@ export const EditProfile: FC = () => {
         const username = target.username.value; // typechecks!
         const contact = target.contact.value; // typechecks!
     
-        const accessToken = ''
+        const user = JSON.parse(localStorage.getItem('user') || '');
         const res = await fetch('http://127.0.0.1:5000/admin/v1/edit',
         { method: 'PATCH',
-          headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}, //'Content-Type': 'application/json', 
-          // headers: {'Authorization': `${accessToken}`},
+          headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}`}, 
           body: JSON.stringify({email, username, contact}),
         })
         const json = await res.json()
         console.log(json)
         if (!res.ok) {console.log('failed')}
         if (res.ok) {console.log('success')}
+        if (res.ok) {handlestateClick()}  
       };
 
     return (
@@ -48,18 +76,6 @@ export const EditProfile: FC = () => {
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         Edit Profile Details
                     </Typography>
-                    {/* <Typography variant="h5" component="div">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium nostrum iure deserunt omnis voluptatem perspiciatis vero corporis id, corrupti suscipit atque debitis quis excepturi at. Laudantium perferendis dolor mollitia impedit?
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic a ipsa officiis ipsum quas non. Ad mollitia obcaecati quas iste incidunt vitae natus id! Provident similique molestias voluptatem at obcaecati?
-                                        </Typography>
-                                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                        adjective
-                                        </Typography>
-                                        <Typography variant="body2">
-                                        well meaning and kindly.
-                                        <br />
-                                        {'"a benevolent smile"'}
-                                        </Typography> */}
                     <Box component="form" noValidate action="" method="post"
                         sx={{
                             my: 2,
@@ -108,9 +124,17 @@ export const EditProfile: FC = () => {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3 }}
+                            // onClick={() => handlestateClick}
+                            // onClick={() => setTimeout(()=> {})}
                         >
                             Sign In
                         </Button>
+                        {/* <Button onClick={handlestateClick}>snackbar</Button> */}
+                        <Snackbar open={state} autoHideDuration={6000} onClose={handlestateClose}>
+                            <Alert onClose={handlestateClose} severity="success" sx={{ width: '100%' }}>
+                            This is a success message!
+                            </Alert>
+                        </Snackbar>
                     </Box>
                 </CardContent>
                 {/* <CardActions>
