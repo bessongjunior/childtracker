@@ -190,8 +190,6 @@ class LoginAdmin(Resource):
 
         admin_exists = Admin.find_by_email(_email)
 
-        print(admin_exists)
-
         if not admin_exists:
             admin_ns.logger.info(f"Administrator donot exist, the email '{_email}' was use, attempting to login on an admin account")
             return {"success": False,
@@ -214,7 +212,7 @@ class LoginAdmin(Resource):
 
         return {"success": True,
                 "token": access_token,
-                "user": admin_exists.toJSON(),
+                "users": admin_exists.toJSON(),
                 # "image_url": image_url
                 }, HTTPStatus.CREATED
 
@@ -515,11 +513,8 @@ class AllUsers(Resource):
         '''get all users in db, without pagination'''
 
         users = Users.query.all()
-        result = []
-        # image_url = url_for('static', filename=f'profile/{users.profile_photo}', _external=True)
-
-        for user in users:
-            result.append({
+        result = [
+            {
                 'id': user.id,
                 'username': user.username,
                 'profile_photo': f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}",  #image_url, #user.profile_photo,
@@ -529,7 +524,22 @@ class AllUsers(Resource):
                 'date_joined': user.date_joined,
                 'sex': user.sex,
                 'country': user.country
-            })
+            } for user in users
+        ]
+        # image_url = url_for('static', filename=f'profile/{users.profile_photo}', _external=True)
+
+        # for user in users:
+        #     result.append({
+        #         'id': user.id,
+        #         'username': user.username,
+        #         'profile_photo': f"{url_for('static', filename=f'profile/{user.id}/{user.profile_photo}', _external=True)}",  #image_url, #user.profile_photo,
+        #         'email': user.email,
+        #         'firstname':user.firstname,
+        #         'lastname': user.lastname,
+        #         'date_joined': user.date_joined,
+        #         'sex': user.sex,
+        #         'country': user.country
+        #     })
 
         return result, HTTPStatus.OK
 

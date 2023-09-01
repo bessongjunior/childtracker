@@ -3,57 +3,77 @@
 import { FC, ReactNode, createContext, Dispatch, useReducer, useEffect } from 'react';
 
 interface User {
-  user: {
+  users: {
     _id: string | number;
     username: string;
     email: string;
   };
-  jwtToken: string;
+  token: string;
   // imageUrl: string;
 }
-
-type AuthState = {
-  user: User | null;
-};
+ 
+type AuthState = { user: User | undefined }; //{ user: User | undefined };
 
 type AuthAction =
-  | { type: 'LOGIN'; payload: User }
+  // | { type: 'LOGIN'; payload: User; user: User | undefined }
+  | { type: 'LOGIN', payload: User} // | undefined 
   | { type: 'LOGOUT' };
+
+// type AuthContextType = AuthState & {
+//     dispatch: Dispatch<AuthAction>,
+//    };
+//  // remov from here
+// const initialState = {
+//     user: undefined,
+//    };
+
+// export const AuthContext = createContext<AuthContextType>({
+//       state: { user: User }, //user: undefined
+//       dispatch: () => { },
+//     });
+// end here to use the authcontext commented below
 
 export const AuthContext = createContext<{
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
   }>({
-    state: { user: null },
+    state: { user: undefined }, //user: undefined
     dispatch: () => { },
   });
 
-const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+// : AuthState =add to infer return type is state
+const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
     case 'LOGIN':
-      return { ...state, user: action.payload };
+      return { state, user: action.payload };
+      // return { ...state, user: action.user };
     case 'LOGOUT':
-      return { user: null };
+      return { user: undefined };
     default:
       return state;
   }
 };
 
 export const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, { user: null });
+  // const [user, dispatch] = useReducer(authReducer, { ...initialState });
+  // const [state, dispatch] = useReducer(authReducer, { ...initialState });
+  const [state, dispatch] = useReducer(authReducer, { user: undefined });
 
+  console.log('user state b4 get localstorage:', state)
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || '{}') as User;
+    console.log(user)
 
-    if (user) {
-      dispatch({ type: 'LOGIN', payload: user });
-    }
+    // if (user) {
+    //   dispatch({ type: 'LOGIN', payload: user });
+    // }
   }, []);
 
+  // console.log('AuthContext state:', user);
   console.log('AuthContext state:', state);
 
-  return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+  return ( //value={{ ...state, dispatch }}
+    <AuthContext.Provider value={{ state, dispatch }}> 
       {children}
     </AuthContext.Provider>
   );
@@ -76,7 +96,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) =
 //     user: User
 //   };
 
-// export const AuthContext = createContext<AuthContextType | null>(null) //<AuthContextType>
+// export const AuthContext = createContext<AuthContextType | undefined>(undefined) //<AuthContextType>
 
 
 // export const authReducer = (state: any, action: any) => {
@@ -84,7 +104,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) =
 //       case 'LOGIN':
 //         return { user: action.payload }
 //       case 'LOGOUT':
-//         return { user: null }
+//         return { user: undefined }
 //       default:
 //         return state
 //     }
@@ -96,7 +116,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) =
 
 // export const AuthContextProvider= ({ children }: Props) => {
 //     const [state, dispatch] = useReducer(authReducer, { 
-//       user: null
+//       user: undefined
 //     })
   
 //     useEffect(() => {

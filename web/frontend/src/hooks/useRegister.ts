@@ -25,12 +25,12 @@ export const useSignup = () => {
     })
     const json = await response.json()
 
-    if (!response.ok) {
+    if (response.status != 201) {
       setIsLoading(false)
       setError(json.error)
       console.log(response)
     }
-    if (response.ok) {
+    if (response.status === 201) {
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
 

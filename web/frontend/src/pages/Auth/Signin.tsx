@@ -10,14 +10,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useLogin} from '../../hooks/useLogin';
-
+import { Navigate } from 'react-router-dom';
+// import { Navigate} from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
+// import { redirect } from 'react-router-dom';
 // type Login
 
 export const SignIn: FC = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const {login, error, isLoading} = useLogin()
+  const {login, error, isLoading, success} = useLogin()
+  // const [errors, setErrors] = useState<undefined | string>(undefined)
+  // const navigate = useNavigate()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,9 +31,26 @@ export const SignIn: FC = () => {
     //   email: data.get('email'),
     //   password: data.get('password'),
     // });
+    // if (email === "") {
+    //   return setErrors("You must enter your email.");
+    // }
+    // if (password === "") {
+    //   return setErrors("You must enter a password.");
+    // }
 
     await login({email, password})
+
+    if (success === true) {
+      console.log('success');
+      // redirect('/admin/dashboard');
+    }
+    // return redirect('/admin/dashboard') 
   };
+
+  if (success === true) {
+    console.log('success');
+    return <Navigate to='/admin/dashboard' />
+  }
 
   return (
 
@@ -86,9 +108,11 @@ export const SignIn: FC = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               disabled={isLoading ? true : false}
+              // onClick={() => {success === true ? redirect('/admin/dashboard') : null}}
             >
-              Sign In
+              Sign In 
             </Button>
+            {/* {success === true ? navigate. push('/admin/dashboard'): null} */}
             {/* <Grid container mt={3}>
               <Grid item xs>
                 <Link href="#" variant="body2">

@@ -15,6 +15,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 
 type DataTypes = {
     date_joined: string;
@@ -28,12 +29,13 @@ type DataTypes = {
 export const ProfileInfo: FC = () => {
     
     const [data, setData] = useState<DataTypes | null>(null)
-    const accessToken = ''
+    const {user} = useAuthContext()
+    console.log(user?.token)
 
     useEffect(() => {
         fetch('http://127.0.0.1:5000/admin/v1/profile-info', 
         {
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user?.token}`}
         })
         .then((res) => res.json())
         .then((data: DataTypes) => {

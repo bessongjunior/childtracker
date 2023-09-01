@@ -3,7 +3,7 @@ import { FC, Fragment, useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { DataGrid, GridColDef} from '@mui/x-data-grid';
-// 
+// import { useAuthContext } from '../../../hooks/useAuthContext';
 import Title from '../../dashboard/components/Title';
 
 // https://stackoverflow.com/questions/75437594/displaying-data-in-material-ui-table-from-api-using-fetch-api
@@ -11,14 +11,16 @@ import Title from '../../dashboard/components/Title';
 
 export const AllUsers: FC = () => {
 
+    // const {user} = useAuthContext()
+
     const [data, setData] = useState([]);
 
-    const accessToken = ''
-
     useEffect(() => {
-        fetch("http://127.0.0.1:5000/admin/v1/allusers",
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        console.log('done', user, user.token)
+        fetch("http://127.0.0.1:5000/admin/v1/users/allusers",
         {
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}`}
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}`}
         })
           .then((res) => res.json())
           .then((res) => { setData(res); })

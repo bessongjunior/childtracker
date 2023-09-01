@@ -9,11 +9,13 @@ type Login = {
 export const useLogin = () => {
   const [error, setError] = useState<null | string>(null)
   const [isLoading, setIsLoading] = useState<null | boolean>(null)
+  const [success, setSuccess] = useState<null | boolean>(null)
   const { dispatch } = useAuthContext()
 
   const login = async ({email, password}: Login) => {
     setIsLoading(true)
     setError(null)
+    setSuccess(false)
 
     const response = await fetch('http://127.0.0.1:5000/admin/v1/login', {
       method: 'POST',
@@ -38,7 +40,10 @@ export const useLogin = () => {
       // update loading state
       setIsLoading(false)
     }
+    if (response.status === 201) {
+      setSuccess(true)
+    }
   }
 
-  return { login, isLoading, error }
+  return { login, isLoading, error, success }
 }
