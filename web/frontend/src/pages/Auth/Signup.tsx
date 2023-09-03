@@ -1,4 +1,4 @@
-import {FC, Fragment, useState, FormEvent} from 'react';
+import {FC, Fragment, forwardRef, useState, FormEvent} from 'react';
 import { useSignup } from '../../hooks/useRegister';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Card, CardContent } from '@mui/material';
 import { Navigate } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 // https://www.youtube.com/watch?v=CrHQBzwus3s&list=PLMr94OOKrgmsTN1ZRxKyDMfBGmgRg_a8_
 // https://tomchentw.github.io/react-google-maps/
@@ -22,14 +24,32 @@ import { Navigate } from 'react-router-dom';
 // TODO remove, this demo shouldn't need to reset the theme.
 // const defaultTheme = createTheme();
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
+
 export const SignUp: FC = () => {
+
+  const [state, setState] = useState<boolean>(false);
+  const handlestateClick = () => {
+    setState(true);
+  };
+  const handlestateClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {return;}
+    setState(false);
+  };
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [first_name, SetFirstname] = useState('')
   const [last_name, setLastname] = useState('')
   const [admin_username, setUsername] = useState('')
-  const [terms, setTerms] = useState<boolean>(false)
+  // const [terms, setTerms] = useState<boolean>(false)
   const {signup, error, isLoading, success} = useSignup()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -45,8 +65,13 @@ export const SignUp: FC = () => {
   };
 
   if (success === true) {
-    console.log('success');
-    return <Navigate to='/admin/signin' />
+    // console.log('success');
+    handlestateClick();
+    // setTimeout(() => {
+    //   /* do stuff */
+    //   return <Navigate to='/admin/signin' />
+    // }, 1750);
+    // return <Navigate to='/admin/signin' />
   }
 
   return (
@@ -142,8 +167,8 @@ export const SignUp: FC = () => {
                     <FormControlLabel
                       control={<Checkbox value="allowExtraEmails" color="primary" />}
                       label={<div>I agree to the <a href=''>terms</a> and <a href=''>conditions</a></div>}
-                      value={terms} 
-                      onChange={() => setTerms(!terms)}
+                      // value={terms} 
+                      // onChange={() => setTerms(!terms)}
                     />
                   </Grid>
                 </Grid>
@@ -156,7 +181,14 @@ export const SignUp: FC = () => {
                 >
                   Sign Up
                 </Button>
-                {error && <Box className="error">{error}</Box>}
+                {/* <Snackbar open={state} autoHideDuration={1700} onClose={handlestateClose}>
+                  <Alert onClose={handlestateClose} severity='success' sx={{ width: '100%' }}> 
+                  This is a success message!
+                  {error ? error : "This is a success message!"}
+                  {error? "error" :"success"}
+                  </Alert>
+                </Snackbar> */}
+                {/* {error && <Box className="error">{error}</Box>} */}
                 <Grid container justifyContent="flex-end">
                   <Grid item>
                     <Link href="#" variant="body2">

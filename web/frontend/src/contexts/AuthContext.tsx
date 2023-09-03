@@ -9,14 +9,15 @@ interface User {
     email: string;
   };
   token: string;
+  success: boolean;
   // imageUrl: string;
 }
  
-type AuthState = { user: User | undefined }; //{ user: User | undefined };
+type AuthState = { user: User | null}; //{ user: User | null};
 
 type AuthAction =
-  // | { type: 'LOGIN'; payload: User; user: User | undefined }
-  | { type: 'LOGIN', payload: User} // | undefined 
+  // | { type: 'LOGIN'; payload: User; user: User | null}
+  | { type: 'LOGIN', payload: User} // | null
   | { type: 'LOGOUT' };
 
 // type AuthContextType = AuthState & {
@@ -37,7 +38,7 @@ export const AuthContext = createContext<{
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
   }>({
-    state: { user: undefined }, //user: undefined
+    state: { user: null}, //user: undefined
     dispatch: () => { },
   });
 
@@ -48,7 +49,7 @@ const authReducer = (state: AuthState, action: AuthAction) => {
       return { state, user: action.payload };
       // return { ...state, user: action.user };
     case 'LOGOUT':
-      return { user: undefined };
+      return { user: null};
     default:
       return state;
   }
@@ -57,16 +58,22 @@ const authReducer = (state: AuthState, action: AuthAction) => {
 export const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   // const [user, dispatch] = useReducer(authReducer, { ...initialState });
   // const [state, dispatch] = useReducer(authReducer, { ...initialState });
-  const [state, dispatch] = useReducer(authReducer, { user: undefined });
+  const [state, dispatch] = useReducer(authReducer, { user: null });
 
   console.log('user state b4 get localstorage:', state)
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}') as User;
+    const user = JSON.parse(localStorage.getItem('user') || ''); //as User;
     console.log(user)
 
-    // if (user) {
-    //   dispatch({ type: 'LOGIN', payload: user });
-    // }
+    if (user) {
+      dispatch({ type: 'LOGIN', payload: user });
+      console.log('User is stored in local storage', user)
+    }
+    if (user === undefined) {
+      // User is not stored in local storage
+      dispatch({type: 'LOGOUT'});
+      console.log('User is not stored in local storage')
+    }
   }, []);
 
   // console.log('AuthContext state:', user);
@@ -104,7 +111,7 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) =
 //       case 'LOGIN':
 //         return { user: action.payload }
 //       case 'LOGOUT':
-//         return { user: undefined }
+//         return { user: null}
 //       default:
 //         return state
 //     }

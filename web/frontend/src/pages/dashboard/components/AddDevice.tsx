@@ -6,7 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-// import { useAuthContext } from '../../../hooks/useAuthContext';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
@@ -19,7 +19,10 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 export const AddDevice: FC = () => {
 
-  // const {user} = useAuthContext()
+  const {user} = useAuthContext()
+  // const {state: { user }} = useAuthContext() // when not further destructured!
+
+  console.log(user?.token)
 
   const [state, setState] = useState<boolean>(false);
 
@@ -56,10 +59,10 @@ export const AddDevice: FC = () => {
     const devicename = target.devicename.value; // typechecks!
     const serialnumber = target.serialnumber.value; // typechecks!
 
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    // const user = JSON.parse(localStorage.getItem('user') || '{}');
     const res = await fetch('http://127.0.0.1:5000/admin/v1/device/registration',
     { method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}`},
+      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${user?.token}`},
       body: JSON.stringify({email, username, devicename, serialnumber}),
     })
     const json = await res.json()
