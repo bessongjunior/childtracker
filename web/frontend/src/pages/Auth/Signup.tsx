@@ -14,8 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Card, CardContent } from '@mui/material';
 import { Navigate } from 'react-router-dom';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+// import Snackbar from '@mui/material/Snackbar';
+// import MuiAlert, { AlertProps } from '@mui/material/Alert';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 // https://www.youtube.com/watch?v=CrHQBzwus3s&list=PLMr94OOKrgmsTN1ZRxKyDMfBGmgRg_a8_
 // https://tomchentw.github.io/react-google-maps/
@@ -24,25 +24,25 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 // TODO remove, this demo shouldn't need to reset the theme.
 // const defaultTheme = createTheme();
 
-const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref,
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+// const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+//   props,
+//   ref,
+// ) {
+//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+// });
 
 
 
 export const SignUp: FC = () => {
 
-  const [state, setState] = useState<boolean>(false);
-  const handlestateClick = () => {
-    setState(true);
-  };
-  const handlestateClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {return;}
-    setState(false);
-  };
+  // const [state, setState] = useState<boolean>(false);
+  // const handlestateClick = () => {
+  //   setState(true);
+  // };
+  // const handlestateClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+  //   if (reason === 'clickaway') {return;}
+  //   setState(false);
+  // };
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -66,12 +66,12 @@ export const SignUp: FC = () => {
 
   if (success === true) {
     // console.log('success');
-    handlestateClick();
+    // handlestateClick();
     // setTimeout(() => {
     //   /* do stuff */
     //   return <Navigate to='/admin/signin' />
     // }, 1750);
-    // return <Navigate to='/admin/signin' />
+    return <Navigate to='/admin/signin' />
   }
 
   return (

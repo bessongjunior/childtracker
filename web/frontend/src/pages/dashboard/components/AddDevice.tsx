@@ -21,7 +21,6 @@ export const AddDevice: FC = () => {
 
   const {user} = useAuthContext()
   // const {state: { user }} = useAuthContext() // when not further destructured!
-
   console.log(user?.token)
 
   const [state, setState] = useState<boolean>(false);
@@ -47,7 +46,6 @@ export const AddDevice: FC = () => {
     //   devicename: data.get('devicename'),
     //   serailnumber: data.get('serialnumber'),
     // });
-
     const target = event.target as typeof event.target & {
       email: {value: string};
       username: {value: string};
