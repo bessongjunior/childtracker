@@ -1,4 +1,4 @@
-import {FC, Fragment, forwardRef, useState, FormEvent} from 'react';
+import {FC, Fragment, useState, FormEvent} from 'react'; //forwardRef,
 import { useSignup } from '../../hooks/useRegister';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -30,7 +30,6 @@ import { Navigate } from 'react-router-dom';
 // ) {
 //   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 // });
-
 
 
 export const SignUp: FC = () => {
@@ -180,7 +179,8 @@ export const SignUp: FC = () => {
                   disabled={isLoading ? true : false}
                 >
                   Sign Up
-                </Button>
+                </Button>'
+                {error && <Box className="error">{error}</Box>}'
                 {/* <Snackbar open={state} autoHideDuration={1700} onClose={handlestateClose}>
                   <Alert onClose={handlestateClose} severity='success' sx={{ width: '100%' }}> 
                   This is a success message!
@@ -188,7 +188,6 @@ export const SignUp: FC = () => {
                   {error? "error" :"success"}
                   </Alert>
                 </Snackbar> */}
-                {/* {error && <Box className="error">{error}</Box>} */}
                 <Grid container justifyContent="flex-end">
                   <Grid item>
                     <Link href="#" variant="body2">
