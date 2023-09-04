@@ -21,13 +21,11 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export const EditProfile: FC = () => {
 
     // const {user} = useAuthContext()
-    const [state, setState] = useState<boolean>(false);
+  const [state, setState] = useState<boolean>(false);
 
   const handlestateClick = () => {
     setState(true);
   };
-
-  const activateSnack = () => handlestateClick;
 
   const handlestateClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {

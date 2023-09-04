@@ -4,12 +4,25 @@ import { Suspense, lazy } from 'react';
 import SuspenseLoader from './components/SuspenseLoader';
 import {createBrowserRouter, RouterProvider } from 'react-router-dom'; 
 import { HomePage } from './views/pages/homepage';
+
+
+
+
+  
+import { UserSignIn } from './views/auth/loginpage';
+import { UserSignUp } from './views/auth/registerpage';
+import { PasswordReset } from './views/auth/passwordresetpage';
+import { UserProfile } from './views/dashboard/Profile';
+import { UserSettings } from './views/dashboard/Setting';
+import { UserDashboard } from './views/dashboard/UserDashboard';
+import { UserReport } from './views/dashboard/Report';
+
+
+
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { SignIn } from './pages/Auth/Signin';
 import { SignUp } from './pages/Auth/Signup';
 import { ResetPasscode } from './pages/Auth/ResetPassword';
-
-
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Users = lazy(() => import('./pages/User'));
@@ -25,6 +38,42 @@ const Users = lazy(() => import('./pages/User'));
 
 const router = createBrowserRouter([
     {
+        path: '/',
+        element: <HomePage />
+    },
+    {
+        path: '/user/login',
+        element: <UserSignIn />
+    },
+    {
+        path: '/user/register',
+        element: <UserSignUp />
+    },
+    {
+        path: '/user/reset-password',
+        element: <PasswordReset />
+    },
+    {
+        path: '/user/dashboard',
+        element: <UserDashboard />
+    },
+    {
+        path: '/user/profile',
+        element: <UserProfile />
+    },
+    {
+        path: '/user/settings',
+        element: <UserSettings />
+    },
+    {
+        path: '/user/report',
+        element: <UserReport />
+    },
+    // {
+    //     path: '/',
+    //     element: < />
+    // },
+    {
         path: 'admin/signin',
         element: <SignIn />,
     },
@@ -35,10 +84,6 @@ const router = createBrowserRouter([
     {
         path: 'admin/passcode-reset',
         element: <ResetPasscode />
-    },
-    {
-        path: '/',
-        element: <HomePage />
     },
     {
         path: 'admin',

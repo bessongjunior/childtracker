@@ -3,7 +3,7 @@ import { FC, ReactNode, createContext, Dispatch, useReducer, useEffect } from 'r
 
 interface User {
   users: {
-    _id: string | number;
+    _id: string;
     username: string;
     email: string;
   };
@@ -42,16 +42,41 @@ export const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) =
   const [state, dispatch] = useReducer(authReducer, { user: undefined });
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}') as User;
+    const user = JSON.parse(localStorage.getItem('user') || '{}') //as User;
 
     try {
       if (user) {
         dispatch({ type: 'LOGIN', payload: user });
+        console.log(user)
       }
     } catch(err) {
       console.log(err)
       throw Error('Something happened!')
     }
+
+    // Refresh token logic
+    const refreshToken = async () => {
+      try {
+        // Replace with your refresh token API endpoint
+        const response = await fetch('/api/refresh-token');
+        const json = await response.json();
+        if (json.user) {
+          localStorage.setItem('user', JSON.stringify(json.user));
+          dispatch({ type: 'LOGIN', payload: json.user });
+        } else {
+          localStorage.removeItem('user');
+          dispatch({ type: 'LOGOUT' });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // Set an interval to refresh the token periodically
+    const intervalId = setInterval(refreshToken, 5 * 60 * 1000); // Refresh every 5 minutes
+
+    return () => clearInterval(intervalId);
+
   }, []);
 
   console.log('AuthContext state:', state);
