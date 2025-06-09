@@ -205,4 +205,25 @@ class Admin(db.Model):
 class TrackHistory():
     '''Table to collect user track History'''
 
-    pass 
+    id: Optional[int] = db.Column(db.Integer(), primary_key=True, nullable=False)
+    device_id: int = db.Column(db.Integer, db.ForeignKey('devices.id'), nullable=False)
+    location: str = db.Column(db.String(), nullable=True)
+    status: str = db.Column(db.String(), nullable=False)
+    notes: str = db.Column(db.Text(), nullable=True)
+    timestamp: datetime = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, server_default=text('CURRENT_TIMESTAMP'))
+
+    # Define the relationship to the Devices table
+    device = db.relationship('Devices', backref=db.backref('track_history', lazy=True))
+
+    def save(self):
+        '''Saves the tracking history record to the database.'''
+        db.session.add(self)
+        db.session.commit()
+
+    def __ref__(self):
+        return f'Tracking for device {self.device_id} at {self.timestamp}'
+
+    @classmethod
+    def get_by_device_id(cls, device_id):
+        '''Retrieves all tracking history for a specific device.'''
+        return cls.query.filter_by(device_id=device_id).all()
